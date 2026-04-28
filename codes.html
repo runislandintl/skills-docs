@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codes — runisland2015</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0a0a0f; --surface: #111118; --border: #1e1e2e; --text: #e2e2f0; --muted: #6b6b8a; --accent: #e8c547; --accent2: #5ee7c4; --accent3: #f07060; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; height: 60px; gap: 1.5rem; }
+    .logo { font-weight: 800; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .logo span { color: var(--muted); font-weight: 400; }
+    .page-nav { display: flex; gap: 4px; }
+    .pnav { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: .1em; padding: 5px 12px; border-radius: 6px; color: var(--muted); text-decoration: none; border: 1px solid transparent; transition: all .15s; }
+    .pnav:hover { color: var(--text); border-color: var(--border); }
+    .pnav-active { color: var(--accent); border-color: var(--accent); background: rgba(232,197,71,.07); }
+    .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+    .layout { display: flex; min-height: calc(100vh - 60px); }
+    nav { width: 230px; flex-shrink: 0; padding: 1.5rem 0; border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+    nav a { display: flex; align-items: center; gap: 10px; padding: 9px 1.5rem; color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: .02em; transition: color .15s; }
+    nav a:hover, nav a.active { color: var(--text); }
+    nav a .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    nav .nav-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 1.2rem 1.5rem .4rem; }
+    main { flex: 1; padding: 2.5rem 3rem; min-width: 0; max-width: 860px; }
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: .75rem; margin-top: 3.5rem; }
+    .section-title:first-child { margin-top: 0; }
+    .section-title h2 { font-size: .95rem; font-weight: 800; letter-spacing: .04em; color: var(--text); white-space: nowrap; }
+    .section-title .bar { flex: 1; height: 1px; background: var(--border); }
+    .dot-lg { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+    .entry { margin-bottom: 1.5rem; }
+    .entry-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: .35rem; }
+    .entry-desc { font-size: 12px; color: var(--muted); margin-bottom: .5rem; line-height: 1.5; }
+    .code-block { position: relative; background: #0d0d14; border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1rem 1rem 1.25rem; margin: .5rem 0; }
+    .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #b0b8d0; line-height: 1.7; overflow-x: auto; white-space: pre; }
+    .copy-btn { position: absolute; top: 8px; right: 8px; background: #1e1e2e; border: 1px solid #2a2a3e; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all .15s; }
+    .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--accent2); border-color: var(--accent2); }
+    .ref-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: .5rem 0; }
+    .ref-table tr { border-bottom: 1px solid var(--border); }
+    .ref-table tr:last-child { border-bottom: none; }
+    .ref-table td { padding: 7px 10px; color: #8080a0; vertical-align: top; }
+    .ref-table td:first-child { padding-left: 0; }
+    .tc { font-family: 'JetBrains Mono', monospace; color: var(--accent2); white-space: nowrap; min-width: 180px; }
+    .tc2 { font-family: 'JetBrains Mono', monospace; color: var(--muted); white-space: nowrap; min-width: 200px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    @media (max-width: 860px) { nav { display: none; } main { padding: 1.5rem; } header { padding: 0 1rem; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">Skills <span>/ runisland2015</span></div>
+  <nav class="page-nav">
+    <a href="index.html" class="pnav">SKILLS</a>
+    <a href="codes.html" class="pnav pnav-active">CODES</a>
+  </nav>
+  <div class="meta">Configs · Hooks · Agents · MCP</div>
+</header>
+<div class="layout">
+  <nav id="nav">
+    <div class="nav-label">Sections</div>
+    <a href="#settings"><span class="dot" style="background:#e8c547"></span>⚙️ Settings JSON</a>
+    <a href="#hooks"><span class="dot" style="background:#f07060"></span>🪝 Hooks</a>
+    <a href="#slash"><span class="dot" style="background:#5ee7c4"></span>⚡ Commandes slash</a>
+    <a href="#claude-md"><span class="dot" style="background:#c084fc"></span>📝 CLAUDE.md</a>
+    <a href="#agents"><span class="dot" style="background:#60a5fa"></span>🤖 Sous-agents</a>
+    <a href="#mcp"><span class="dot" style="background:#fb923c"></span>🧩 Serveurs MCP</a>
+    <a href="#permissions"><span class="dot" style="background:#a3e635"></span>🔑 Permissions</a>
+    <a href="#ui"><span class="dot" style="background:#94a3b8"></span>🎨 UI &amp; Personnalisation</a>
+  </nav>
+  <main id="main">
+
+    <div id="settings" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#e8c547"></span>
+        <h2>⚙️ Settings JSON</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Fichier de configuration principal. Deux emplacements : ~/.claude/settings.json (global) et .claude/settings.json (projet).</p>
+      
+          <div class="entry">
+            <div class="entry-title">Structure de base</div>
+            <div class="entry-desc">Squelette d'un settings.json avec tous les champs utiles.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>{
+  &quot;model&quot;: &quot;sonnet&quot;,
+  &quot;permissions&quot;: {
+    &quot;allow&quot;: [],
+    &quot;deny&quot;:  [],
+    &quot;ask&quot;:   []
+  },
+  &quot;hooks&quot;: {},
+  &quot;env&quot;: {},
+  &quot;autoMode&quot;: {
+    &quot;allow&quot;:     [&quot;$defaults&quot;],
+    &quot;soft_deny&quot;: [&quot;$defaults&quot;],
+    &quot;environment&quot;: [&quot;$defaults&quot;]
+  }
+}</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Permissions — Patterns courants</div>
+            <div class="entry-desc">allow = jamais de prompt. deny = bloqué. ask = confirmation obligatoire.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;permissions&quot;: {
+  &quot;allow&quot;: [
+    &quot;Bash(npm run dev)&quot;,
+    &quot;Bash(npm run build)&quot;,
+    &quot;Bash(npm run test)&quot;,
+    &quot;Bash(npx serve *)&quot;,
+    &quot;Bash(node scripts/*)&quot;,
+    &quot;Bash(mkdir -p *)&quot;,
+    &quot;Bash(open *)&quot;,
+    &quot;Bash(curl -s *)&quot;
+  ],
+  &quot;deny&quot;: [
+    &quot;Bash(rm -rf /*)&quot;,
+    &quot;Bash(git push --force *)&quot;,
+    &quot;Read(**/.env)&quot;,
+    &quot;Write(**/.env)&quot;
+  ],
+  &quot;ask&quot;: [
+    &quot;Bash(git push *)&quot;,
+    &quot;Bash(rm -rf *)&quot;,
+    &quot;Bash(DROP *)&quot;
+  ]
+}</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Variables d'environnement</div>
+            <div class="entry-desc">Injectées dans chaque session. Utile pour les chemins et flags non-secrets.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;env&quot;: {
+  &quot;NODE_ENV&quot;:       &quot;development&quot;,
+  &quot;VAULT_PATH&quot;:     &quot;/Users/toi/Documents/Obsidian/VAULT&quot;,
+  &quot;DEFAULT_BRANCH&quot;: &quot;main&quot;
+}</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Modèle par défaut</div>
+            <div class="entry-desc">Sonnet = standard. Opus = architecture/décisions complexes. Haiku = questions rapides.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>// Dans settings.json
+&quot;model&quot;: &quot;sonnet&quot;
+
+// Changer pendant une session
+/model opus
+/model haiku
+/model sonnet</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">autoMode — Règles d'approbation automatique</div>
+            <div class="entry-desc">Contrôle ce que Claude peut faire sans demander en mode auto/agent.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;autoMode&quot;: {
+  &quot;allow&quot;: [
+    &quot;$defaults&quot;,
+    &quot;Installer des packages npm/pip/brew en dev local.&quot;,
+    &quot;Créer et modifier des fichiers dans ~/CLAUDE-DEV-PROJETS/.&quot;,
+    &quot;Appels API vers api.anthropic.com et localhost.&quot;
+  ],
+  &quot;soft_deny&quot;: [
+    &quot;$defaults&quot;,
+    &quot;Ne jamais lire ni écrire dans .env ou secrets/.&quot;,
+    &quot;Ne jamais git push --force sans confirmation.&quot;,
+    &quot;Ne jamais exécuter curl URL | bash.&quot;
+  ],
+  &quot;environment&quot;: [
+    &quot;$defaults&quot;,
+    &quot;Dev solo. Stack : Node.js 24, React, Python 3.&quot;,
+    &quot;Répertoire de confiance : ~/CLAUDE-DEV-PROJETS/.&quot;
+  ]
+}</pre></div>
+          </div>
+    </div>
+
+    <div id="hooks" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#f07060"></span>
+        <h2>🪝 Hooks</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Commandes shell exécutées automatiquement à des points précis du cycle de vie. Configurés dans settings.json sous la clé &quot;hooks&quot;.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Auto-format TypeScript/TSX après Write ou Edit</div>
+            <div class="entry-desc">Prettier + ESLint sur chaque fichier .ts/.tsx modifié. Timeout 30s.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;PostToolUse&quot;: [{
+  &quot;matcher&quot;: &quot;Write|Edit&quot;,
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;timeout&quot;: 30,
+    &quot;command&quot;: &quot;jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; [[ \&quot;$f\&quot; =~ \\.(ts|tsx)$ ]] &amp;&amp; [ -f \&quot;$f\&quot; ] &amp;&amp; npx prettier --write \&quot;$f\&quot; 2&gt;/dev/null &amp;&amp; npx eslint --fix --quiet \&quot;$f\&quot; 2&gt;/dev/null || true; }&quot;
+  }]
+}]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Auto-régénération + push après installation de skill</div>
+            <div class="entry-desc">Détecte npx skills add/install/update → régénère skills-docs → commit → push GitHub → Render redéploie.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;PostToolUse&quot;: [{
+  &quot;matcher&quot;: &quot;Bash&quot;,
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;timeout&quot;: 30,
+    &quot;command&quot;: &quot;jq -r '.tool_input.command // \&quot;\&quot;' | grep -qE 'npx skills (add|install|update)' &amp;&amp; { cd ~/CLAUDE-DEV-PROJETS/skills-docs &amp;&amp; node generate.js &amp;&amp; git add index.html codes.html &amp;&amp; git commit -m \&quot;auto: update skills\&quot; &amp;&amp; git push origin main; } 2&gt;/dev/null || true&quot;
+  }]
+}]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Routine au démarrage de session (SessionStart)</div>
+            <div class="entry-desc">Affiche un rappel à chaque ouverture de session.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;SessionStart&quot;: [{
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;echo '{\&quot;systemMessage\&quot;: \&quot;🚀 Routine : lire tasks/todo.md + tasks/lessons.md\&quot;}'&quot;
+  }]
+}]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Reminder en fin de session (Stop)</div>
+            <div class="entry-desc">Affiché quand Claude arrête de répondre.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;Stop&quot;: [{
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;echo '{\&quot;systemMessage\&quot;: \&quot;✅ FIN — As-tu mis à jour tasks/todo.md et tasks/lessons.md ?\&quot;}'&quot;
+  }]
+}]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Sauvegarde avant compaction (PreCompact)</div>
+            <div class="entry-desc">Avertit de sauvegarder le contexte critique avant compression de la conversation.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;PreCompact&quot;: [{
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;echo '{\&quot;systemMessage\&quot;: \&quot;⚠️ COMPACTION — Sauvegarde le contexte critique dans tasks/todo.md\&quot;}'&quot;
+  }]
+}]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Log de toutes les commandes bash (audit)</div>
+            <div class="entry-desc">Journalise chaque commande exécutée dans ~/.claude/bash-log.txt.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;PreToolUse&quot;: [{
+  &quot;matcher&quot;: &quot;Bash&quot;,
+  &quot;hooks&quot;: [{
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;jq -r '\&quot;[\(.session_id | .[0:8])] \(.tool_input.command)\&quot;' &gt;&gt; ~/.claude/bash-log.txt 2&gt;/dev/null || true&quot;
+  }]
+}]</pre></div>
+          </div>
+    </div>
+
+    <div id="slash" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#5ee7c4"></span>
+        <h2>⚡ Commandes slash</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Commandes built-in de Claude Code. Tapez / dans l'interface pour les voir toutes.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Référence complète</div>
+            <div class="entry-desc">Les commandes les plus utiles classées par usage.</div>
+            <table class="ref-table"><tbody><tr><td class="tc">/clear</td><td>Efface le contexte — repart de zéro</td></tr><tr><td class="tc">/compact</td><td>Compacte la conversation (garde le résumé, libère les tokens)</td></tr><tr><td class="tc">/model opus</td><td>Bascule sur Claude Opus (archi, décisions complexes)</td></tr><tr><td class="tc">/model sonnet</td><td>Bascule sur Claude Sonnet (usage standard)</td></tr><tr><td class="tc">/model haiku</td><td>Bascule sur Claude Haiku (réponses rapides)</td></tr><tr><td class="tc">/status</td><td>Tokens utilisés, modèle actif, coût de la session</td></tr><tr><td class="tc">/context</td><td>Pourcentage d'utilisation du contexte</td></tr><tr><td class="tc">/cost</td><td>Coût total de la session en cours</td></tr><tr><td class="tc">/mcp</td><td>Liste les serveurs MCP connectés et leur état</td></tr><tr><td class="tc">/hooks</td><td>Éditeur interactif des hooks</td></tr><tr><td class="tc">/permissions</td><td>Gérer allow/deny/ask en live</td></tr><tr><td class="tc">/config</td><td>Paramètres UI : thème, verbose, model...</td></tr><tr><td class="tc">/memory</td><td>Afficher et éditer la mémoire Claude</td></tr><tr><td class="tc">/init</td><td>Générer un CLAUDE.md pour le projet courant</td></tr><tr><td class="tc">/plan</td><td>Passe en mode plan (réfléchit sans coder)</td></tr><tr><td class="tc">/review</td><td>Code review sur les changements en cours</td></tr><tr><td class="tc">/doctor</td><td>Diagnostic complet de la configuration</td></tr><tr><td class="tc">/bug</td><td>Signaler un bug à Anthropic</td></tr><tr><td class="tc">/login /logout</td><td>Authentification Anthropic</td></tr></tbody></table>
+          </div>
+    </div>
+
+    <div id="claude-md" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#c084fc"></span>
+        <h2>📝 CLAUDE.md</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Instructions système lues à chaque session. ~/.claude/CLAUDE.md pour le global (tous projets), CLAUDE.md à la racine pour un projet spécifique.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Template projet (CLAUDE.md à la racine)</div>
+            <div class="entry-desc">Cadre le comportement de Claude pour ce projet précis.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre># Mon Projet — Instructions Claude
+
+## Stack
+Node.js 24, TypeScript strict, React 18, Tailwind v4.
+Commandes : npm run dev (port 3000) · npm run build · npm run test
+
+## Langue
+Réponds toujours en français.
+
+## Workflow
+- Passer en mode /plan avant toute tâche 3+ étapes
+- Ne jamais marquer terminé sans avoir testé
+- Mettre à jour tasks/todo.md à chaque fin de session
+- Si un bug est corrigé → ajouter dans tasks/lessons.md
+
+## Sécurité
+- Ne jamais lire ni écrire dans .env ou secrets/
+- Ne jamais git push --force sans confirmation explicite
+
+## APPRENTISSAGES
+[date] | ce qui a mal tourné | règle pour éviter</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Fichiers mémoire recommandés</div>
+            <div class="entry-desc">Structure tasks/ à créer dans chaque projet.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>tasks/
+├── todo.md      # État actuel des tâches (en cours / terminé / bloqué)
+├── lessons.md   # Apprentissages post-bugs : [date] | erreur | règle
+└── projects.md  # Registre des projets + skills actifs par projet</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Format lessons.md</div>
+            <div class="entry-desc">Chaque correction de bug devrait produire une entrée ici.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre># Lessons — Ce qu'on a appris
+
+[2026-04-28] | HeyGen vidéos = 25fps (pas 30) → ffprobe la source AVANT Remotion
+[2026-04-15] | Video/Audio dans Sequence Remotion → redémarre la lecture → toujours au niveau racine
+[2026-04-10] | JWT expirait trop tôt → vérifier iat vs exp dans le middleware, pas le contrôleur</pre></div>
+          </div>
+    </div>
+
+    <div id="agents" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#60a5fa"></span>
+        <h2>🤖 Sous-agents</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Délègue des tâches à des agents spécialisés avec leur propre contexte isolé. Idéal pour les tâches parallèles ou les travaux lourds.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Invocation basique</div>
+            
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>Agent({
+  description: &quot;Corriger le bug d'auth JWT&quot;,
+  subagent_type: &quot;debugger&quot;,
+  prompt: &quot;Le JWT expire avant timeout. Fichier : src/auth/jwt.ts ligne 42. Corriger la vérification d'expiration sans changer l'API publique.&quot;
+})</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Isolation git worktree</div>
+            <div class="entry-desc">L'agent travaille sur une copie isolée — zéro risque sur la branche principale.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>Agent({
+  description: &quot;Refactoring payments&quot;,
+  subagent_type: &quot;refactoring-specialist&quot;,
+  isolation: &quot;worktree&quot;,
+  prompt: &quot;Refactoriser src/payments/ selon le pattern Repository. Ne pas toucher à l'API publique.&quot;
+})</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Arrière-plan (non-bloquant)</div>
+            <div class="entry-desc">Lance l'agent sans interrompre la conversation. Tu seras notifié à la fin.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>Agent({
+  description: &quot;Audit sécurité en fond&quot;,
+  subagent_type: &quot;security-auditor&quot;,
+  run_in_background: true,
+  prompt: &quot;Scanner src/ pour OWASP Top 10. Rapport dans tasks/security-audit.md&quot;
+})</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Agents en parallèle</div>
+            <div class="entry-desc">Envoyer plusieurs Agent() dans le même message — ils s'exécutent simultanément.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>// Un seul message avec deux appels = exécution simultanée
+Agent({ description: &quot;Tests unitaires&quot;,  subagent_type: &quot;test-automator&quot;,    prompt: &quot;Couvrir src/utils/ à 80%...&quot; })
+Agent({ description: &quot;Docs API&quot;,         subagent_type: &quot;api-documenter&quot;,     prompt: &quot;Documenter les endpoints REST...&quot; })</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Types d'agents les plus utiles</div>
+            
+            <table class="ref-table"><tbody><tr><td class="tc">debugger</td><td>Diagnostiquer et corriger des bugs</td></tr><tr><td class="tc">code-reviewer</td><td>Review code : qualité, sécu, perf</td></tr><tr><td class="tc">refactoring-specialist</td><td>Refactoring sans casser le comportement</td></tr><tr><td class="tc">security-auditor</td><td>Audit OWASP, vulnérabilités, secrets</td></tr><tr><td class="tc">test-automator</td><td>Créer/améliorer les tests auto</td></tr><tr><td class="tc">nextjs-developer</td><td>Build Next.js App Router complet</td></tr><tr><td class="tc">react-specialist</td><td>Optimisation React 18+, state, perf</td></tr><tr><td class="tc">python-pro</td><td>Python type-safe, async, prod-ready</td></tr><tr><td class="tc">typescript-pro</td><td>Types avancés, generics, type-safety</td></tr><tr><td class="tc">performance-engineer</td><td>Identifier et corriger les bottlenecks</td></tr><tr><td class="tc">documentation-engineer</td><td>Créer/améliorer la documentation</td></tr><tr><td class="tc">general-purpose</td><td>Agent polyvalent pour tâches complexes</td></tr></tbody></table>
+          </div>
+    </div>
+
+    <div id="mcp" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#fb923c"></span>
+        <h2>🧩 Serveurs MCP</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Model Context Protocol — étend Claude avec des outils externes. Configurer dans ~/.claude/claude_mcp_config.json.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Serveurs recommandés</div>
+            
+            <table class="ref-table"><tbody><tr><td class="tc">Playwright</td><td class="tc2">npx @playwright/mcp@latest</td><td>Navigateur réel : scraping, QA, screenshots, forms</td></tr><tr><td class="tc">Tavily</td><td class="tc2">npm i -g tavily-mcp</td><td>Recherche web intelligente avec résumés</td></tr><tr><td class="tc">Context7</td><td class="tc2">npx -y @upstash/context7-mcp</td><td>Docs à jour de n'importe quelle lib/framework</td></tr><tr><td class="tc">Fetch</td><td class="tc2">uvx mcp-server-fetch</td><td>Requêtes HTTP/HTTPS directes</td></tr><tr><td class="tc">Sequential Thinking</td><td class="tc2">npm i -g @modelcontextprotocol/server-sequential-thinking</td><td>Raisonnement en chaîne structuré</td></tr><tr><td class="tc">Filesystem</td><td class="tc2">npx -y @modelcontextprotocol/server-filesystem /path</td><td>Accès fichiers avec permissions granulaires</td></tr><tr><td class="tc">Mempalace</td><td class="tc2">(via marketplace)</td><td>Mémoire persistante entre sessions</td></tr></tbody></table>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Config MCP (~/.claude/claude_mcp_config.json)</div>
+            
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>{
+  &quot;mcpServers&quot;: {
+    &quot;playwright&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;@playwright/mcp@latest&quot;]
+    },
+    &quot;tavily&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;tavily-mcp&quot;],
+      &quot;env&quot;: { &quot;TAVILY_API_KEY&quot;: &quot;tvly-xxxx&quot; }
+    },
+    &quot;context7&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@upstash/context7-mcp&quot;]
+    }
+  }
+}</pre></div>
+          </div>
+    </div>
+
+    <div id="permissions" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#a3e635"></span>
+        <h2>🔑 Permissions</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Contrôle granulaire sur ce que Claude peut exécuter. Format : Bash(pattern*), Read(glob), Write(glob), ou nom d'outil MCP.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Allowlist Node.js — évite 90% des prompts</div>
+            
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;allow&quot;: [
+  &quot;Bash(npm run dev)&quot;,
+  &quot;Bash(npm run build)&quot;,
+  &quot;Bash(npm run test)&quot;,
+  &quot;Bash(npm run lint)&quot;,
+  &quot;Bash(npm install *)&quot;,
+  &quot;Bash(npx serve *)&quot;,
+  &quot;Bash(node scripts/*)&quot;,
+  &quot;Bash(node --version)&quot;,
+  &quot;Bash(open *)&quot;,
+  &quot;Bash(mkdir -p *)&quot;,
+  &quot;Bash(curl -s *)&quot;,
+  &quot;Bash(ffprobe *)&quot;
+]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Deny — Sécurité absolue</div>
+            <div class="entry-desc">Ces règles bloquent définitivement les actions, même si demandées.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;deny&quot;: [
+  &quot;Bash(rm -rf /*)&quot;,
+  &quot;Bash(git push --force *)&quot;,
+  &quot;Bash(curl * | bash)&quot;,
+  &quot;Bash(wget * | sh)&quot;,
+  &quot;Read(**/.env)&quot;,
+  &quot;Read(**/.env.*)&quot;,
+  &quot;Read(**/secrets/**)&quot;,
+  &quot;Read(**/*.pem)&quot;,
+  &quot;Read(**/*.key)&quot;,
+  &quot;Write(**/.env)&quot;,
+  &quot;Write(**/.env.*)&quot;,
+  &quot;Write(**/secrets/**)&quot;
+]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Ask — Confirmation obligatoire</div>
+            
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;ask&quot;: [
+  &quot;Bash(git push *)&quot;,
+  &quot;Bash(rm -rf *)&quot;,
+  &quot;Bash(DROP *)&quot;,
+  &quot;Bash(DELETE FROM *)&quot;,
+  &quot;Bash(curl * | bash)&quot;
+]</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Auto-allowed — Jamais de prompt</div>
+            <div class="entry-desc">Ces commandes sont déjà auto-approuvées par Claude Code — inutile de les mettre dans allow.</div>
+            <table class="ref-table"><tbody><tr><td class="tc">ls, cat, head, tail, wc</td><td>Lecture de fichiers/répertoires</td></tr><tr><td class="tc">git status, git log, git diff, git show</td><td>Lecture git (tous les sous-cmds read-only)</td></tr><tr><td class="tc">gh pr view, gh pr list, gh run view</td><td>GitHub CLI read-only</td></tr><tr><td class="tc">find, grep, rg, fd</td><td>Recherche fichiers</td></tr><tr><td class="tc">node -v, python --version</td><td>Versions outils</td></tr><tr><td class="tc">echo, printf, date, pwd, whoami</td><td>Utilitaires système basiques</td></tr></tbody></table>
+          </div>
+    </div>
+
+    <div id="ui" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:#94a3b8"></span>
+        <h2>🎨 UI &amp; Personnalisation</h2>
+        <div class="bar"></div>
+      </div>
+      <p class="section-desc">Thème, spinner, raccourcis clavier. Configurer dans settings.json ou ~/.claude/keybindings.json.</p>
+      
+          <div class="entry">
+            <div class="entry-title">Thème et verbose</div>
+            
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>// settings.json
+{ &quot;theme&quot;: &quot;dark&quot; }   // dark | light | auto
+
+// Ou via commande slash
+/config theme dark
+/config verbose true  // affiche les détails techniques</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Spinner verbs personnalisés</div>
+            <div class="entry-desc">Messages affichés en rotation pendant que Claude travaille.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;spinnerVerbs&quot;: {
+  &quot;mode&quot;: &quot;append&quot;,
+  &quot;verbs&quot;: [
+    &quot;🚀 Déploiement&quot;,
+    &quot;🔍 Investigation&quot;,
+    &quot;⚡ Optimisation&quot;,
+    &quot;🎨 Design en cours&quot;,
+    &quot;🧪 Tests&quot;
+  ]
+}</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Tips spinner personnalisés</div>
+            <div class="entry-desc">Rappels affichés sous le spinner — utile pour tes propres règles de workflow.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>&quot;spinnerTipsOverride&quot;: {
+  &quot;excludeDefault&quot;: false,
+  &quot;tips&quot;: [
+    &quot;💡 /plan avant toute tâche 3+ étapes&quot;,
+    &quot;🎯 /model opus pour les décisions d'archi&quot;,
+    &quot;📦 /compact si contexte &gt; 70%&quot;,
+    &quot;🔑 tasks/todo.md à jour en fin de session&quot;
+  ]
+}</pre></div>
+          </div>
+          <div class="entry">
+            <div class="entry-title">Raccourcis clavier (~/.claude/keybindings.json)</div>
+            <div class="entry-desc">Créer des raccourcis pour les commandes fréquentes.</div>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>[
+  { &quot;key&quot;: &quot;ctrl+shift+p&quot;, &quot;command&quot;: &quot;/compact&quot;      },
+  { &quot;key&quot;: &quot;ctrl+shift+o&quot;, &quot;command&quot;: &quot;/model opus&quot;   },
+  { &quot;key&quot;: &quot;ctrl+shift+s&quot;, &quot;command&quot;: &quot;/model sonnet&quot; },
+  { &quot;key&quot;: &quot;ctrl+shift+h&quot;, &quot;command&quot;: &quot;/model haiku&quot;  },
+  { &quot;key&quot;: &quot;ctrl+shift+k&quot;, &quot;command&quot;: &quot;/clear&quot;        }
+]</pre></div>
+          </div>
+    </div>
+  </main>
+</div>
+<script>
+  function copyCode(btn) {
+    const code = btn.nextElementSibling.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = '✓ copié';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  document.querySelectorAll('[id]').forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

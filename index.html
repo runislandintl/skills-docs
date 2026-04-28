@@ -18,6 +18,10 @@
     header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 1rem; }
     .logo { font-weight: 800; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     .logo span { color: var(--muted); font-weight: 400; }
+    .page-nav { display: flex; gap: 4px; }
+    .pnav { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: .1em; padding: 5px 12px; border-radius: 6px; color: var(--muted); text-decoration: none; border: 1px solid transparent; transition: all .15s; }
+    .pnav:hover { color: var(--text); border-color: var(--border); }
+    .pnav-active { color: var(--accent); border-color: var(--accent); background: rgba(232,197,71,.07); }
     .search-wrap { position: relative; flex: 1; max-width: 360px; }
     .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
     #search { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 8px 36px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; transition: border-color .2s; }
@@ -91,11 +95,15 @@
 <body>
 <header>
   <div class="logo">Skills <span>/ runisland2015</span></div>
+  <nav class="page-nav">
+    <a href="index.html" class="pnav pnav-active">SKILLS</a>
+    <a href="codes.html" class="pnav">CODES</a>
+  </nav>
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="search" type="text" placeholder="Rechercher un skill, une action…" autocomplete="off">
   </div>
-  <div class="meta"><span id="count">65</span> skills &nbsp;·&nbsp; 28/04/2026 19:26:23</div>
+  <div class="meta"><span id="count">57</span> skills &nbsp;·&nbsp; 28/04/2026 19:38:30</div>
 </header>
 <div class="layout">
   <nav id="nav">
@@ -106,6 +114,7 @@
     <a href="#gstack"><span class="dot gstack"></span>Gstack</a>
     <a href="#session"><span class="dot session"></span>Session &amp; Contexte</a>
     <a href="#misc"><span class="dot misc"></span>Divers</a>
+    <a href="#other"><span class="dot misc"></span>Autres</a>
   </nav>
   <main id="main">
 
@@ -116,7 +125,7 @@
         <span class="badge">9</span>
       </div>
       <div class="grid">
-        <div class="card" data-keywords="systematic-debugging use when encountering any bug, test failure, or unexpected behavior, before proposing fixes protocole de débogage structuré par hypothèses. force une analyse rigoureuse avant toute modification du code.">
+        <div class="card" data-keywords="systematic-debugging  protocole de débogage structuré par hypothèses. force une analyse rigoureuse avant toute modification du code.">
           <div class="card-header">
             <span class="card-name">systematic-debugging</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -137,7 +146,7 @@
             <code class="ex-code">/systematic-debugging — la fonction parseDate retourne undefined</code><code class="ex-code">/systematic-debugging — le test d'intégration échoue en CI mais pas en local</code>
           </div>
         </div>
-        <div class="card" data-keywords="test-driven-development use when implementing any feature or bugfix, before writing implementation code applique la discipline tdd : écrire les tests en premier, puis le code qui les fait passer. garantit une couverture réelle et un design orienté contrat.">
+        <div class="card" data-keywords="test-driven-development  applique la discipline tdd : écrire les tests en premier, puis le code qui les fait passer. garantit une couverture réelle et un design orienté contrat.">
           <div class="card-header">
             <span class="card-name">test-driven-development</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -158,7 +167,7 @@
             <code class="ex-code">/test-driven-development — implémente la validation de numéro IBAN</code><code class="ex-code">/test-driven-development — ajoute la logique de calcul de remise</code>
           </div>
         </div>
-        <div class="card" data-keywords="writing-plans use when you have a spec or requirements for a multi-step task, before touching code transforme un spec ou des requirements flous en plan d'implémentation structuré avec étapes, dépendances et risques identifiés.">
+        <div class="card" data-keywords="writing-plans  transforme un spec ou des requirements flous en plan d'implémentation structuré avec étapes, dépendances et risques identifiés.">
           <div class="card-header">
             <span class="card-name">writing-plans</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -179,7 +188,7 @@
             <code class="ex-code">/writing-plans — intégrer le webhook Stripe pour les remboursements</code><code class="ex-code">/writing-plans — migrer la base de données vers PostgreSQL</code>
           </div>
         </div>
-        <div class="card" data-keywords="executing-plans use when you have a written implementation plan to execute in a separate session with review checkpoints exécute un plan d'implémentation existant dans une session dédiée, avec des points de contrôle après chaque étape.">
+        <div class="card" data-keywords="executing-plans  exécute un plan d'implémentation existant dans une session dédiée, avec des points de contrôle après chaque étape.">
           <div class="card-header">
             <span class="card-name">executing-plans</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -200,7 +209,7 @@
             <code class="ex-code">/executing-plans — exécute le plan dans tasks/todo.md</code>
           </div>
         </div>
-        <div class="card" data-keywords="verification-before-completion use when about to claim work is complete, fixed, or passing, before committing or creating prs - requires running verification commands and confirming output before making any success claims; evidence before assertions always bloque toute déclaration de 'tâche terminée' sans preuve. exige l'exécution des commandes de vérification et la confirmation des résultats.">
+        <div class="card" data-keywords="verification-before-completion  bloque toute déclaration de 'tâche terminée' sans preuve. exige l'exécution des commandes de vérification et la confirmation des résultats.">
           <div class="card-header">
             <span class="card-name">verification-before-completion</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -221,7 +230,7 @@
             <code class="ex-code">/verification-before-completion — avant de merger la PR #42</code>
           </div>
         </div>
-        <div class="card" data-keywords="requesting-code-review use when completing tasks, implementing major features, or before merging to verify work meets requirements structure une demande de code review rigoureuse : contexte, changements, tests effectués, points d'attention.">
+        <div class="card" data-keywords="requesting-code-review  structure une demande de code review rigoureuse : contexte, changements, tests effectués, points d'attention.">
           <div class="card-header">
             <span class="card-name">requesting-code-review</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -242,7 +251,7 @@
             <code class="ex-code">/requesting-code-review — PR de refactoring du module auth</code>
           </div>
         </div>
-        <div class="card" data-keywords="receiving-code-review use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation analyse le feedback reçu d'une code review avec rigueur : distingue les suggestions valides des opinions non fondées avant d'implémenter quoi que ce soit.">
+        <div class="card" data-keywords="receiving-code-review  analyse le feedback reçu d'une code review avec rigueur : distingue les suggestions valides des opinions non fondées avant d'implémenter quoi que ce soit.">
           <div class="card-header">
             <span class="card-name">receiving-code-review</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -263,7 +272,7 @@
             <code class="ex-code">/receiving-code-review — le reviewer dit de tout refactorer en classes</code>
           </div>
         </div>
-        <div class="card" data-keywords="finishing-a-development-branch use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, pr, or cleanup guide la fin d'une branche de développement : présente les options (merge direct, pr, squash, cleanup) et aide à choisir la bonne stratégie.">
+        <div class="card" data-keywords="finishing-a-development-branch  guide la fin d'une branche de développement : présente les options (merge direct, pr, squash, cleanup) et aide à choisir la bonne stratégie.">
           <div class="card-header">
             <span class="card-name">finishing-a-development-branch</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -284,7 +293,7 @@
             <code class="ex-code">/finishing-a-development-branch — feature/stripe-webhooks</code>
           </div>
         </div>
-        <div class="card" data-keywords="brainstorming you must use this before any creative work - creating features, building components, adding functionality, or modifying behavior. explores user intent, requirements and design before implementation. exploration structurée avant tout travail créatif : clarifie l'intention, explore les approches, évalue les trade-offs avant de coder.">
+        <div class="card" data-keywords="brainstorming  exploration structurée avant tout travail créatif : clarifie l'intention, explore les approches, évalue les trade-offs avant de coder.">
           <div class="card-header">
             <span class="card-name">brainstorming</span>
             <div class="card-tags"><span class="tag dev">DEV</span></div>
@@ -315,7 +324,7 @@
         <span class="badge">6</span>
       </div>
       <div class="grid">
-        <div class="card" data-keywords="impeccable use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. covers websites, landing pages, dashboards, product ui, app shells, components, forms, settings, onboarding, and empty states. handles ux review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, ux copy, error states, edge cases, i18n, and reusable design systems or tokens. also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on ui elements, or ambitious visual effects that should feel technically extraordinary. not for backend-only or non-ui tasks. 23 commandes de design frontend qui combattent les patterns 'ai slop' — inter, gradients violets, cards dans des cards — et les remplacent par des choix visuels distinctifs.">
+        <div class="card" data-keywords="impeccable  23 commandes de design frontend qui combattent les patterns 'ai slop' — inter, gradients violets, cards dans des cards — et les remplacent par des choix visuels distinctifs.">
           <div class="card-header">
             <span class="card-name">impeccable</span>
             <div class="card-tags"><span class="tag new">NEW</span><span class="tag design">DESIGN</span></div>
@@ -448,10 +457,10 @@
       <div class="section-title">
         <h2>Agents &amp; Architecture</h2>
         <div class="bar"></div>
-        <span class="badge">7</span>
+        <span class="badge">6</span>
       </div>
       <div class="grid">
-        <div class="card" data-keywords="dispatching-parallel-agents use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies orchestre plusieurs sous-agents en parallèle pour traiter des tâches indépendantes simultanément et réduire le temps d'exécution.">
+        <div class="card" data-keywords="dispatching-parallel-agents  orchestre plusieurs sous-agents en parallèle pour traiter des tâches indépendantes simultanément et réduire le temps d'exécution.">
           <div class="card-header">
             <span class="card-name">dispatching-parallel-agents</span>
             <div class="card-tags"><span class="tag agent">AGENT</span></div>
@@ -472,7 +481,7 @@
             <code class="ex-code">/dispatching-parallel-agents — écrire les tests + documenter l'API + migrer les styles</code>
           </div>
         </div>
-        <div class="card" data-keywords="subagent-driven-development use when executing implementation plans with independent tasks in the current session exécute un plan d'implémentation en déléguant chaque tâche à un sous-agent dédié dans la session courante.">
+        <div class="card" data-keywords="subagent-driven-development  exécute un plan d'implémentation en déléguant chaque tâche à un sous-agent dédié dans la session courante.">
           <div class="card-header">
             <span class="card-name">subagent-driven-development</span>
             <div class="card-tags"><span class="tag agent">AGENT</span></div>
@@ -493,7 +502,7 @@
             <code class="ex-code">/subagent-driven-development — exécute le plan de migration v2</code>
           </div>
         </div>
-        <div class="card" data-keywords="using-git-worktrees use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification crée des worktrees git isolés pour travailler sur une feature sans polluer l'espace de travail courant. idéal pour les expérimentations risquées.">
+        <div class="card" data-keywords="using-git-worktrees  crée des worktrees git isolés pour travailler sur une feature sans polluer l'espace de travail courant. idéal pour les expérimentations risquées.">
           <div class="card-header">
             <span class="card-name">using-git-worktrees</span>
             <div class="card-tags"><span class="tag agent">AGENT</span></div>
@@ -514,7 +523,7 @@
             <code class="ex-code">/using-git-worktrees — avant de tester la migration Prisma</code>
           </div>
         </div>
-        <div class="card" data-keywords="writing-skills use when creating new skills, editing existing skills, or verifying skills work before deployment guide pour créer, modifier ou valider des skills claude code. inclut les conventions, la structure skill.md et les tests de déploiement.">
+        <div class="card" data-keywords="writing-skills  guide pour créer, modifier ou valider des skills claude code. inclut les conventions, la structure skill.md et les tests de déploiement.">
           <div class="card-header">
             <span class="card-name">writing-skills</span>
             <div class="card-tags"><span class="tag agent">AGENT</span></div>
@@ -535,7 +544,7 @@
             <code class="ex-code">/writing-skills — crée un skill /claresai-pipeline</code>
           </div>
         </div>
-        <div class="card" data-keywords="using-superpowers use when starting any conversation - establishes how to find and use skills, requiring skill tool invocation before any response including clarifying questions meta-skill : explique comment trouver et utiliser tous les skills disponibles. à invoquer au démarrage d'une conversation pour activer le toolkit complet.">
+        <div class="card" data-keywords="using-superpowers  meta-skill : explique comment trouver et utiliser tous les skills disponibles. à invoquer au démarrage d'une conversation pour activer le toolkit complet.">
           <div class="card-header">
             <span class="card-name">using-superpowers</span>
             <div class="card-tags"><span class="tag agent">AGENT</span></div>
@@ -554,27 +563,6 @@
           <div class="card-section">
             <div class="section-label-sm">Exemples</div>
             <code class="ex-code">/using-superpowers</code>
-          </div>
-        </div>
-        <div class="card" data-keywords="pair-agent | active le mode pair programming avec un sous-agent dédié : l'un code, l'autre review en temps réel.">
-          <div class="card-header">
-            <span class="card-name">pair-agent</span>
-            <div class="card-tags"><span class="tag agent">AGENT</span></div>
-          </div>
-          <div class="card-slash">/pair-agent</div>
-          <div class="card-desc">Active le mode pair programming avec un sous-agent dédié : l'un code, l'autre review en temps réel.</div>
-          
-          <div class="card-section">
-            <div class="section-label-sm">Ce que tu peux faire</div>
-            <ul class="bullet-list"><li>Avoir une deuxième lecture critique en temps réel</li><li>Détecter les erreurs pendant l'implémentation, pas après</li><li>Alterner les rôles driver/navigator</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm must">Ce que tu dois faire</div>
-            <ul class="bullet-list must-list"><li>Décrire la tâche à implémenter en pair</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm">Exemples</div>
-            <code class="ex-code">/pair-agent — implémente le module de parsing des factures</code>
           </div>
         </div>
         <div class="card" data-keywords="agent-browser browser automation cli for ai agents. use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. triggers include requests to &quot;open a website&quot;, &quot;fill out a form&quot;, &quot;click a button&quot;, &quot;take a screenshot&quot;, &quot;scrape data from a page&quot;, &quot;test this web app&quot;, &quot;login to a site&quot;, &quot;automate browser actions&quot;, or any task requiring programmatic web interaction. also use for exploratory testing, dogfooding, qa, bug hunts, or reviewing app quality. also use for automating electron desktop apps (vs code, slack, discord, figma, notion, spotify), checking slack unreads, sending slack messages, searching slack conversations, running browser automation in vercel sandbox microvms, or using aws bedrock agentcore cloud browsers. prefer agent-browser over any built-in browser automation or web tools. cli en rust qui pilote chrome nativement via cdp. automatise n'importe quelle interaction dans un navigateur web ou une app electron.">
@@ -605,7 +593,7 @@
       <div class="section-title">
         <h2>Gstack</h2>
         <div class="bar"></div>
-        <span class="badge">33</span>
+        <span class="badge">26</span>
       </div>
       <div class="grid">
         <div class="card" data-keywords="browse | navigation web via le browser gstack. à utiliser pour toute navigation — ne jamais utiliser les outils chrome mcp directement.">
@@ -773,15 +761,6 @@
           <div class="card-desc">|</div>
           
         </div>
-        <div class="card" data-keywords="plan-devex-review | |">
-          <div class="card-header">
-            <span class="card-name">plan-devex-review</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/plan-devex-review</div>
-          <div class="card-desc">|</div>
-          
-        </div>
         <div class="card" data-keywords="careful | mode d'exécution ultra-prudent, étape par étape avec confirmation avant chaque action destructive ou irréversible.">
           <div class="card-header">
             <span class="card-name">careful</span>
@@ -896,27 +875,6 @@
             <code class="ex-code">/benchmark — compare l'ancienne et la nouvelle implémentation du parser</code>
           </div>
         </div>
-        <div class="card" data-keywords="benchmark-models | compare plusieurs modèles claude sur une même tâche : qualité de réponse, vitesse, coût. aide à choisir le modèle optimal.">
-          <div class="card-header">
-            <span class="card-name">benchmark-models</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/benchmark-models</div>
-          <div class="card-desc">Compare plusieurs modèles Claude sur une même tâche : qualité de réponse, vitesse, coût. Aide à choisir le modèle optimal.</div>
-          
-          <div class="card-section">
-            <div class="section-label-sm">Ce que tu peux faire</div>
-            <ul class="bullet-list"><li>Choisir entre Sonnet, Opus et Haiku pour un cas d'usage</li><li>Mesurer objectivement la qualité vs le coût</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm must">Ce que tu dois faire</div>
-            <ul class="bullet-list must-list"><li>Définir la tâche et les critères d'évaluation</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm">Exemples</div>
-            <code class="ex-code">/benchmark-models — pour la génération de scripts vidéo Claresai</code>
-          </div>
-        </div>
         <div class="card" data-keywords="review | code review approfondie : qualité, sécurité, performance, maintenabilité. produit des findings priorisés avec suggestions concrètes.">
           <div class="card-header">
             <span class="card-name">review</span>
@@ -968,24 +926,6 @@
           <div class="card-desc">|</div>
           
         </div>
-        <div class="card" data-keywords="devex-review | |">
-          <div class="card-header">
-            <span class="card-name">devex-review</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/devex-review</div>
-          <div class="card-desc">|</div>
-          
-        </div>
-        <div class="card" data-keywords="connect-chrome | |">
-          <div class="card-header">
-            <span class="card-name">open-gstack-browser</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/connect-chrome</div>
-          <div class="card-desc">|</div>
-          
-        </div>
         <div class="card" data-keywords="open-gstack-browser | |">
           <div class="card-header">
             <span class="card-name">open-gstack-browser</span>
@@ -1001,15 +941,6 @@
             <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
           </div>
           <div class="card-slash">/setup-browser-cookies</div>
-          <div class="card-desc">|</div>
-          
-        </div>
-        <div class="card" data-keywords="setup-gbrain | |">
-          <div class="card-header">
-            <span class="card-name">setup-gbrain</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/setup-gbrain</div>
           <div class="card-desc">|</div>
           
         </div>
@@ -1056,24 +987,6 @@
           </div>
           <div class="card-slash">/guard</div>
           <div class="card-desc">|</div>
-          
-        </div>
-        <div class="card" data-keywords="plan-tune | |">
-          <div class="card-header">
-            <span class="card-name">plan-tune</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/plan-tune</div>
-          <div class="card-desc">|</div>
-          
-        </div>
-        <div class="card" data-keywords="smart-search  voir skill.md pour la documentation complète.">
-          <div class="card-header">
-            <span class="card-name">smart-search</span>
-            <div class="card-tags"><span class="tag gstack">GSTACK</span></div>
-          </div>
-          <div class="card-slash">/smart-search</div>
-          <div class="card-desc">Voir SKILL.md pour la documentation complète.</div>
           
         </div>
         <div class="card" data-keywords="office-hours | |">
@@ -1228,7 +1141,7 @@
       <div class="section-title">
         <h2>Divers</h2>
         <div class="bar"></div>
-        <span class="badge">5</span>
+        <span class="badge">4</span>
       </div>
       <div class="grid">
         <div class="card" data-keywords="heygen-skills | toolkit heygen : génération de vidéos avatar ia, gestion des jobs de génération, récupération des mp4 finaux. intègre le pipeline claresai.">
@@ -1315,26 +1228,24 @@
             <code class="ex-code">/document-release — v3.0.0 du plugin vault-pkm</code>
           </div>
         </div>
-        <div class="card" data-keywords="landing-report | audit et rapport complet d'une landing page : conversion, copywriting, cta, hiérarchie visuelle, performance, seo.">
+      </div>
+    </div>
+
+    <div id="other">
+      <div class="section-title">
+        <h2>Autres</h2>
+        <div class="bar"></div>
+        <span class="badge">1</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="smart-search  voir skill.md pour la documentation complète.">
           <div class="card-header">
-            <span class="card-name">landing-report</span>
+            <span class="card-name">smart-search</span>
             <div class="card-tags"><span class="tag misc">MISC</span></div>
           </div>
-          <div class="card-slash">/landing-report</div>
-          <div class="card-desc">Audit et rapport complet d'une landing page : conversion, copywriting, CTA, hiérarchie visuelle, performance, SEO.</div>
+          <div class="card-slash">/smart-search</div>
+          <div class="card-desc">Voir SKILL.md pour la documentation complète.</div>
           
-          <div class="card-section">
-            <div class="section-label-sm">Ce que tu peux faire</div>
-            <ul class="bullet-list"><li>Identifier pourquoi une landing page ne convertit pas</li><li>Obtenir des recommandations priorisées par impact</li><li>Comparer avec les best practices du secteur</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm must">Ce que tu dois faire</div>
-            <ul class="bullet-list must-list"><li>Fournir l'URL de la page ou le code source</li></ul>
-          </div>
-          <div class="card-section">
-            <div class="section-label-sm">Exemples</div>
-            <code class="ex-code">/landing-report — https://claresai.com</code>
-          </div>
         </div>
       </div>
     </div>

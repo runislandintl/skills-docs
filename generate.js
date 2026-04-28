@@ -773,13 +773,11 @@ const SKILL_DATA = {
   },
 };
 
+// ── Skills récemment installés (badge NEW, pas de section séparée) ──────────
+const NEW_IDS = new Set(["agent-browser", "impeccable", "vault-pkm"]);
+
 // ── Catégories ─────────────────────────────────────────────────────────────
 const CATEGORIES = {
-  new: {
-    label: "Récemment installés",
-    color: "#e8c547", tagClass: "new",
-    ids: ["agent-browser", "impeccable", "vault-pkm"],
-  },
   dev: {
     label: "Workflow de développement",
     color: "#5ee7c4", tagClass: "dev",
@@ -793,17 +791,17 @@ const CATEGORIES = {
   agent: {
     label: "Agents & Architecture",
     color: "#60a5fa", tagClass: "agent",
-    ids: ["dispatching-parallel-agents","subagent-driven-development","using-git-worktrees","writing-skills","using-superpowers","pair-agent"],
+    ids: ["dispatching-parallel-agents","subagent-driven-development","using-git-worktrees","writing-skills","using-superpowers","agent-browser"],
   },
   gstack: {
     label: "Gstack",
     color: "#fb923c", tagClass: "gstack",
-    ids: ["browse","qa","qa-only","ship","retro","investigate","plan-eng-review","plan-ceo-review","plan-design-review","plan-devex-review","careful","canary","autoplan","freeze","unfreeze","benchmark","benchmark-models","review","learn","land-and-deploy","devex-review","connect-chrome","open-gstack-browser","setup-browser-cookies","setup-gbrain","codex","cso","gstack","gstack-upgrade","guard","plan-tune","smart-search","office-hours"],
+    ids: ["browse","qa","qa-only","ship","retro","investigate","plan-eng-review","plan-ceo-review","plan-design-review","careful","canary","autoplan","freeze","unfreeze","benchmark","review","learn","land-and-deploy","open-gstack-browser","setup-browser-cookies","codex","cso","gstack","gstack-upgrade","guard","office-hours"],
   },
   session: {
     label: "Session & Contexte",
     color: "#a3e635", tagClass: "session",
-    ids: ["project-routine","claude-council","context-save","context-restore","health"],
+    ids: ["project-routine","claude-council","context-save","context-restore","health","vault-pkm"],
   },
   misc: {
     label: "Divers",
@@ -896,11 +894,13 @@ function renderCard(skill, tagClass) {
 
   const toolsHtml = skill.tools ? `<div class="card-tools">Outils : <span>${esc(skill.tools)}</span></div>` : "";
 
+  const newBadge = NEW_IDS.has(skill.id) ? `<span class="tag new">NEW</span>` : "";
+
   return `
         <div class="card" data-keywords="${esc(skill.id)} ${esc(skill.rawDesc.toLowerCase())} ${esc(desc.toLowerCase())}">
           <div class="card-header">
             <span class="card-name">${esc(skill.name)}</span>
-            <span class="tag ${tagClass}">${tagClass.toUpperCase()}</span>
+            <div class="card-tags">${newBadge}<span class="tag ${tagClass}">${tagClass.toUpperCase()}</span></div>
           </div>
           <div class="card-slash">/${esc(skill.id)}</div>
           <div class="card-desc">${esc(desc)}</div>
@@ -954,6 +954,10 @@ function buildHtml(categorized, totalCount) {
     header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 1rem; }
     .logo { font-weight: 800; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     .logo span { color: var(--muted); font-weight: 400; }
+    .page-nav { display: flex; gap: 4px; }
+    .pnav { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: .1em; padding: 5px 12px; border-radius: 6px; color: var(--muted); text-decoration: none; border: 1px solid transparent; transition: all .15s; }
+    .pnav:hover { color: var(--text); border-color: var(--border); }
+    .pnav-active { color: var(--accent); border-color: var(--accent); background: rgba(232,197,71,.07); }
     .search-wrap { position: relative; flex: 1; max-width: 360px; }
     .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
     #search { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 8px 36px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; transition: border-color .2s; }
@@ -981,6 +985,7 @@ function buildHtml(categorized, totalCount) {
     .card:hover { border-color: #2a2a3e; transform: translateY(-1px); }
     .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .card-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+    .card-tags { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; letter-spacing: .06em; flex-shrink: 0; text-transform: uppercase; }
     .card-slash { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
     .card-desc { font-size: 13px; color: #9090b0; line-height: 1.6; }
@@ -1015,11 +1020,21 @@ function buildHtml(categorized, totalCount) {
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    @media (max-width: 860px) {
+      nav { display: none; }
+      main { padding: 1.5rem; }
+      .grid { grid-template-columns: 1fr; }
+      header { padding: 0 1rem; }
+    }
   </style>
 </head>
 <body>
 <header>
   <div class="logo">Skills <span>/ runisland2015</span></div>
+  <nav class="page-nav">
+    <a href="index.html" class="pnav pnav-active">SKILLS</a>
+    <a href="codes.html" class="pnav">CODES</a>
+  </nav>
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="search" type="text" placeholder="Rechercher un skill, une action…" autocomplete="off">
@@ -1065,8 +1080,622 @@ ${sections}
 </html>`;
 }
 
+// ── Codes page ──────────────────────────────────────────────────────────────
+const CODES_SECTIONS = [
+  {
+    id: "settings",
+    label: "⚙️ Settings JSON",
+    color: "#e8c547",
+    desc: "Fichier de configuration principal. Deux emplacements : ~/.claude/settings.json (global) et .claude/settings.json (projet).",
+    entries: [
+      {
+        title: "Structure de base",
+        desc: "Squelette d'un settings.json avec tous les champs utiles.",
+        code: `{
+  "model": "sonnet",
+  "permissions": {
+    "allow": [],
+    "deny":  [],
+    "ask":   []
+  },
+  "hooks": {},
+  "env": {},
+  "autoMode": {
+    "allow":     ["$defaults"],
+    "soft_deny": ["$defaults"],
+    "environment": ["$defaults"]
+  }
+}`,
+      },
+      {
+        title: "Permissions — Patterns courants",
+        desc: "allow = jamais de prompt. deny = bloqué. ask = confirmation obligatoire.",
+        code: `"permissions": {
+  "allow": [
+    "Bash(npm run dev)",
+    "Bash(npm run build)",
+    "Bash(npm run test)",
+    "Bash(npx serve *)",
+    "Bash(node scripts/*)",
+    "Bash(mkdir -p *)",
+    "Bash(open *)",
+    "Bash(curl -s *)"
+  ],
+  "deny": [
+    "Bash(rm -rf /*)",
+    "Bash(git push --force *)",
+    "Read(**/.env)",
+    "Write(**/.env)"
+  ],
+  "ask": [
+    "Bash(git push *)",
+    "Bash(rm -rf *)",
+    "Bash(DROP *)"
+  ]
+}`,
+      },
+      {
+        title: "Variables d'environnement",
+        desc: "Injectées dans chaque session. Utile pour les chemins et flags non-secrets.",
+        code: `"env": {
+  "NODE_ENV":       "development",
+  "VAULT_PATH":     "/Users/toi/Documents/Obsidian/VAULT",
+  "DEFAULT_BRANCH": "main"
+}`,
+      },
+      {
+        title: "Modèle par défaut",
+        desc: "Sonnet = standard. Opus = architecture/décisions complexes. Haiku = questions rapides.",
+        code: `// Dans settings.json
+"model": "sonnet"
+
+// Changer pendant une session
+/model opus
+/model haiku
+/model sonnet`,
+      },
+      {
+        title: "autoMode — Règles d'approbation automatique",
+        desc: "Contrôle ce que Claude peut faire sans demander en mode auto/agent.",
+        code: `"autoMode": {
+  "allow": [
+    "$defaults",
+    "Installer des packages npm/pip/brew en dev local.",
+    "Créer et modifier des fichiers dans ~/CLAUDE-DEV-PROJETS/.",
+    "Appels API vers api.anthropic.com et localhost."
+  ],
+  "soft_deny": [
+    "$defaults",
+    "Ne jamais lire ni écrire dans .env ou secrets/.",
+    "Ne jamais git push --force sans confirmation.",
+    "Ne jamais exécuter curl URL | bash."
+  ],
+  "environment": [
+    "$defaults",
+    "Dev solo. Stack : Node.js 24, React, Python 3.",
+    "Répertoire de confiance : ~/CLAUDE-DEV-PROJETS/."
+  ]
+}`,
+      },
+    ],
+  },
+  {
+    id: "hooks",
+    label: "🪝 Hooks",
+    color: "#f07060",
+    desc: "Commandes shell exécutées automatiquement à des points précis du cycle de vie. Configurés dans settings.json sous la clé \"hooks\".",
+    entries: [
+      {
+        title: "Auto-format TypeScript/TSX après Write ou Edit",
+        desc: "Prettier + ESLint sur chaque fichier .ts/.tsx modifié. Timeout 30s.",
+        code: `"PostToolUse": [{
+  "matcher": "Write|Edit",
+  "hooks": [{
+    "type": "command",
+    "timeout": 30,
+    "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; [[ \\"$f\\" =~ \\\\.(ts|tsx)$ ]] && [ -f \\"$f\\" ] && npx prettier --write \\"$f\\" 2>/dev/null && npx eslint --fix --quiet \\"$f\\" 2>/dev/null || true; }"
+  }]
+}]`,
+      },
+      {
+        title: "Auto-régénération + push après installation de skill",
+        desc: "Détecte npx skills add/install/update → régénère skills-docs → commit → push GitHub → Render redéploie.",
+        code: `"PostToolUse": [{
+  "matcher": "Bash",
+  "hooks": [{
+    "type": "command",
+    "timeout": 30,
+    "command": "jq -r '.tool_input.command // \\"\\"' | grep -qE 'npx skills (add|install|update)' && { cd ~/CLAUDE-DEV-PROJETS/skills-docs && node generate.js && git add index.html codes.html && git commit -m \\"auto: update skills\\" && git push origin main; } 2>/dev/null || true"
+  }]
+}]`,
+      },
+      {
+        title: "Routine au démarrage de session (SessionStart)",
+        desc: "Affiche un rappel à chaque ouverture de session.",
+        code: `"SessionStart": [{
+  "hooks": [{
+    "type": "command",
+    "command": "echo '{\\"systemMessage\\": \\"🚀 Routine : lire tasks/todo.md + tasks/lessons.md\\"}'"
+  }]
+}]`,
+      },
+      {
+        title: "Reminder en fin de session (Stop)",
+        desc: "Affiché quand Claude arrête de répondre.",
+        code: `"Stop": [{
+  "hooks": [{
+    "type": "command",
+    "command": "echo '{\\"systemMessage\\": \\"✅ FIN — As-tu mis à jour tasks/todo.md et tasks/lessons.md ?\\"}'"
+  }]
+}]`,
+      },
+      {
+        title: "Sauvegarde avant compaction (PreCompact)",
+        desc: "Avertit de sauvegarder le contexte critique avant compression de la conversation.",
+        code: `"PreCompact": [{
+  "hooks": [{
+    "type": "command",
+    "command": "echo '{\\"systemMessage\\": \\"⚠️ COMPACTION — Sauvegarde le contexte critique dans tasks/todo.md\\"}'"
+  }]
+}]`,
+      },
+      {
+        title: "Log de toutes les commandes bash (audit)",
+        desc: "Journalise chaque commande exécutée dans ~/.claude/bash-log.txt.",
+        code: `"PreToolUse": [{
+  "matcher": "Bash",
+  "hooks": [{
+    "type": "command",
+    "command": "jq -r '\\"[\\(.session_id | .[0:8])] \\(.tool_input.command)\\"' >> ~/.claude/bash-log.txt 2>/dev/null || true"
+  }]
+}]`,
+      },
+    ],
+  },
+  {
+    id: "slash",
+    label: "⚡ Commandes slash",
+    color: "#5ee7c4",
+    desc: "Commandes built-in de Claude Code. Tapez / dans l'interface pour les voir toutes.",
+    entries: [
+      {
+        title: "Référence complète",
+        desc: "Les commandes les plus utiles classées par usage.",
+        table: [
+          ["/clear",               "Efface le contexte — repart de zéro"],
+          ["/compact",             "Compacte la conversation (garde le résumé, libère les tokens)"],
+          ["/model opus",          "Bascule sur Claude Opus (archi, décisions complexes)"],
+          ["/model sonnet",        "Bascule sur Claude Sonnet (usage standard)"],
+          ["/model haiku",         "Bascule sur Claude Haiku (réponses rapides)"],
+          ["/status",              "Tokens utilisés, modèle actif, coût de la session"],
+          ["/context",             "Pourcentage d'utilisation du contexte"],
+          ["/cost",                "Coût total de la session en cours"],
+          ["/mcp",                 "Liste les serveurs MCP connectés et leur état"],
+          ["/hooks",               "Éditeur interactif des hooks"],
+          ["/permissions",         "Gérer allow/deny/ask en live"],
+          ["/config",              "Paramètres UI : thème, verbose, model..."],
+          ["/memory",              "Afficher et éditer la mémoire Claude"],
+          ["/init",                "Générer un CLAUDE.md pour le projet courant"],
+          ["/plan",                "Passe en mode plan (réfléchit sans coder)"],
+          ["/review",              "Code review sur les changements en cours"],
+          ["/doctor",              "Diagnostic complet de la configuration"],
+          ["/bug",                 "Signaler un bug à Anthropic"],
+          ["/login /logout",       "Authentification Anthropic"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "claude-md",
+    label: "📝 CLAUDE.md",
+    color: "#c084fc",
+    desc: "Instructions système lues à chaque session. ~/.claude/CLAUDE.md pour le global (tous projets), CLAUDE.md à la racine pour un projet spécifique.",
+    entries: [
+      {
+        title: "Template projet (CLAUDE.md à la racine)",
+        desc: "Cadre le comportement de Claude pour ce projet précis.",
+        code: `# Mon Projet — Instructions Claude
+
+## Stack
+Node.js 24, TypeScript strict, React 18, Tailwind v4.
+Commandes : npm run dev (port 3000) · npm run build · npm run test
+
+## Langue
+Réponds toujours en français.
+
+## Workflow
+- Passer en mode /plan avant toute tâche 3+ étapes
+- Ne jamais marquer terminé sans avoir testé
+- Mettre à jour tasks/todo.md à chaque fin de session
+- Si un bug est corrigé → ajouter dans tasks/lessons.md
+
+## Sécurité
+- Ne jamais lire ni écrire dans .env ou secrets/
+- Ne jamais git push --force sans confirmation explicite
+
+## APPRENTISSAGES
+[date] | ce qui a mal tourné | règle pour éviter`,
+      },
+      {
+        title: "Fichiers mémoire recommandés",
+        desc: "Structure tasks/ à créer dans chaque projet.",
+        code: `tasks/
+├── todo.md      # État actuel des tâches (en cours / terminé / bloqué)
+├── lessons.md   # Apprentissages post-bugs : [date] | erreur | règle
+└── projects.md  # Registre des projets + skills actifs par projet`,
+      },
+      {
+        title: "Format lessons.md",
+        desc: "Chaque correction de bug devrait produire une entrée ici.",
+        code: `# Lessons — Ce qu'on a appris
+
+[2026-04-28] | HeyGen vidéos = 25fps (pas 30) → ffprobe la source AVANT Remotion
+[2026-04-15] | Video/Audio dans Sequence Remotion → redémarre la lecture → toujours au niveau racine
+[2026-04-10] | JWT expirait trop tôt → vérifier iat vs exp dans le middleware, pas le contrôleur`,
+      },
+    ],
+  },
+  {
+    id: "agents",
+    label: "🤖 Sous-agents",
+    color: "#60a5fa",
+    desc: "Délègue des tâches à des agents spécialisés avec leur propre contexte isolé. Idéal pour les tâches parallèles ou les travaux lourds.",
+    entries: [
+      {
+        title: "Invocation basique",
+        code: `Agent({
+  description: "Corriger le bug d'auth JWT",
+  subagent_type: "debugger",
+  prompt: "Le JWT expire avant timeout. Fichier : src/auth/jwt.ts ligne 42. Corriger la vérification d'expiration sans changer l'API publique."
+})`,
+      },
+      {
+        title: "Isolation git worktree",
+        desc: "L'agent travaille sur une copie isolée — zéro risque sur la branche principale.",
+        code: `Agent({
+  description: "Refactoring payments",
+  subagent_type: "refactoring-specialist",
+  isolation: "worktree",
+  prompt: "Refactoriser src/payments/ selon le pattern Repository. Ne pas toucher à l'API publique."
+})`,
+      },
+      {
+        title: "Arrière-plan (non-bloquant)",
+        desc: "Lance l'agent sans interrompre la conversation. Tu seras notifié à la fin.",
+        code: `Agent({
+  description: "Audit sécurité en fond",
+  subagent_type: "security-auditor",
+  run_in_background: true,
+  prompt: "Scanner src/ pour OWASP Top 10. Rapport dans tasks/security-audit.md"
+})`,
+      },
+      {
+        title: "Agents en parallèle",
+        desc: "Envoyer plusieurs Agent() dans le même message — ils s'exécutent simultanément.",
+        code: `// Un seul message avec deux appels = exécution simultanée
+Agent({ description: "Tests unitaires",  subagent_type: "test-automator",    prompt: "Couvrir src/utils/ à 80%..." })
+Agent({ description: "Docs API",         subagent_type: "api-documenter",     prompt: "Documenter les endpoints REST..." })`,
+      },
+      {
+        title: "Types d'agents les plus utiles",
+        desc: "",
+        table: [
+          ["debugger",                "Diagnostiquer et corriger des bugs"],
+          ["code-reviewer",           "Review code : qualité, sécu, perf"],
+          ["refactoring-specialist",  "Refactoring sans casser le comportement"],
+          ["security-auditor",        "Audit OWASP, vulnérabilités, secrets"],
+          ["test-automator",          "Créer/améliorer les tests auto"],
+          ["nextjs-developer",        "Build Next.js App Router complet"],
+          ["react-specialist",        "Optimisation React 18+, state, perf"],
+          ["python-pro",              "Python type-safe, async, prod-ready"],
+          ["typescript-pro",          "Types avancés, generics, type-safety"],
+          ["performance-engineer",    "Identifier et corriger les bottlenecks"],
+          ["documentation-engineer",  "Créer/améliorer la documentation"],
+          ["general-purpose",         "Agent polyvalent pour tâches complexes"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "mcp",
+    label: "🧩 Serveurs MCP",
+    color: "#fb923c",
+    desc: "Model Context Protocol — étend Claude avec des outils externes. Configurer dans ~/.claude/claude_mcp_config.json.",
+    entries: [
+      {
+        title: "Serveurs recommandés",
+        desc: "",
+        table: [
+          ["Playwright",           "npx @playwright/mcp@latest",                              "Navigateur réel : scraping, QA, screenshots, forms"],
+          ["Tavily",               "npm i -g tavily-mcp",                                     "Recherche web intelligente avec résumés"],
+          ["Context7",             "npx -y @upstash/context7-mcp",                            "Docs à jour de n'importe quelle lib/framework"],
+          ["Fetch",                "uvx mcp-server-fetch",                                    "Requêtes HTTP/HTTPS directes"],
+          ["Sequential Thinking",  "npm i -g @modelcontextprotocol/server-sequential-thinking","Raisonnement en chaîne structuré"],
+          ["Filesystem",           "npx -y @modelcontextprotocol/server-filesystem /path",    "Accès fichiers avec permissions granulaires"],
+          ["Mempalace",            "(via marketplace)",                                       "Mémoire persistante entre sessions"],
+        ],
+      },
+      {
+        title: "Config MCP (~/.claude/claude_mcp_config.json)",
+        code: `{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "tavily": {
+      "command": "npx",
+      "args": ["tavily-mcp"],
+      "env": { "TAVILY_API_KEY": "tvly-xxxx" }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  }
+}`,
+      },
+    ],
+  },
+  {
+    id: "permissions",
+    label: "🔑 Permissions",
+    color: "#a3e635",
+    desc: "Contrôle granulaire sur ce que Claude peut exécuter. Format : Bash(pattern*), Read(glob), Write(glob), ou nom d'outil MCP.",
+    entries: [
+      {
+        title: "Allowlist Node.js — évite 90% des prompts",
+        code: `"allow": [
+  "Bash(npm run dev)",
+  "Bash(npm run build)",
+  "Bash(npm run test)",
+  "Bash(npm run lint)",
+  "Bash(npm install *)",
+  "Bash(npx serve *)",
+  "Bash(node scripts/*)",
+  "Bash(node --version)",
+  "Bash(open *)",
+  "Bash(mkdir -p *)",
+  "Bash(curl -s *)",
+  "Bash(ffprobe *)"
+]`,
+      },
+      {
+        title: "Deny — Sécurité absolue",
+        desc: "Ces règles bloquent définitivement les actions, même si demandées.",
+        code: `"deny": [
+  "Bash(rm -rf /*)",
+  "Bash(git push --force *)",
+  "Bash(curl * | bash)",
+  "Bash(wget * | sh)",
+  "Read(**/.env)",
+  "Read(**/.env.*)",
+  "Read(**/secrets/**)",
+  "Read(**/*.pem)",
+  "Read(**/*.key)",
+  "Write(**/.env)",
+  "Write(**/.env.*)",
+  "Write(**/secrets/**)"
+]`,
+      },
+      {
+        title: "Ask — Confirmation obligatoire",
+        code: `"ask": [
+  "Bash(git push *)",
+  "Bash(rm -rf *)",
+  "Bash(DROP *)",
+  "Bash(DELETE FROM *)",
+  "Bash(curl * | bash)"
+]`,
+      },
+      {
+        title: "Auto-allowed — Jamais de prompt",
+        desc: "Ces commandes sont déjà auto-approuvées par Claude Code — inutile de les mettre dans allow.",
+        table: [
+          ["ls, cat, head, tail, wc", "Lecture de fichiers/répertoires"],
+          ["git status, git log, git diff, git show", "Lecture git (tous les sous-cmds read-only)"],
+          ["gh pr view, gh pr list, gh run view", "GitHub CLI read-only"],
+          ["find, grep, rg, fd", "Recherche fichiers"],
+          ["node -v, python --version", "Versions outils"],
+          ["echo, printf, date, pwd, whoami", "Utilitaires système basiques"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "ui",
+    label: "🎨 UI & Personnalisation",
+    color: "#94a3b8",
+    desc: "Thème, spinner, raccourcis clavier. Configurer dans settings.json ou ~/.claude/keybindings.json.",
+    entries: [
+      {
+        title: "Thème et verbose",
+        code: `// settings.json
+{ "theme": "dark" }   // dark | light | auto
+
+// Ou via commande slash
+/config theme dark
+/config verbose true  // affiche les détails techniques`,
+      },
+      {
+        title: "Spinner verbs personnalisés",
+        desc: "Messages affichés en rotation pendant que Claude travaille.",
+        code: `"spinnerVerbs": {
+  "mode": "append",
+  "verbs": [
+    "🚀 Déploiement",
+    "🔍 Investigation",
+    "⚡ Optimisation",
+    "🎨 Design en cours",
+    "🧪 Tests"
+  ]
+}`,
+      },
+      {
+        title: "Tips spinner personnalisés",
+        desc: "Rappels affichés sous le spinner — utile pour tes propres règles de workflow.",
+        code: `"spinnerTipsOverride": {
+  "excludeDefault": false,
+  "tips": [
+    "💡 /plan avant toute tâche 3+ étapes",
+    "🎯 /model opus pour les décisions d'archi",
+    "📦 /compact si contexte > 70%",
+    "🔑 tasks/todo.md à jour en fin de session"
+  ]
+}`,
+      },
+      {
+        title: "Raccourcis clavier (~/.claude/keybindings.json)",
+        desc: "Créer des raccourcis pour les commandes fréquentes.",
+        code: `[
+  { "key": "ctrl+shift+p", "command": "/compact"      },
+  { "key": "ctrl+shift+o", "command": "/model opus"   },
+  { "key": "ctrl+shift+s", "command": "/model sonnet" },
+  { "key": "ctrl+shift+h", "command": "/model haiku"  },
+  { "key": "ctrl+shift+k", "command": "/clear"        }
+]`,
+      },
+    ],
+  },
+];
+
+function buildCodesHtml() {
+  const nav = CODES_SECTIONS.map(s =>
+    `    <a href="#${s.id}"><span class="dot" style="background:${esc(s.color)}"></span>${esc(s.label)}</a>`
+  ).join("\n");
+
+  const sections = CODES_SECTIONS.map(s => {
+    const entries = s.entries.map(e => {
+      let body = "";
+      if (e.code) {
+        body += `<div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copier</button><pre>${esc(e.code)}</pre></div>`;
+      }
+      if (e.table) {
+        const cols = e.table[0].length;
+        const rows = e.table.map(r =>
+          cols === 2
+            ? `<tr><td class="tc">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`
+            : `<tr><td class="tc">${esc(r[0])}</td><td class="tc2">${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`
+        ).join("");
+        body += `<table class="ref-table"><tbody>${rows}</tbody></table>`;
+      }
+      return `
+          <div class="entry">
+            <div class="entry-title">${esc(e.title)}</div>
+            ${e.desc ? `<div class="entry-desc">${esc(e.desc)}</div>` : ""}
+            ${body}
+          </div>`;
+    }).join("");
+
+    return `
+    <div id="${s.id}" class="codes-section">
+      <div class="section-title">
+        <span class="dot-lg" style="background:${esc(s.color)}"></span>
+        <h2>${esc(s.label)}</h2>
+        <div class="bar"></div>
+      </div>
+      ${s.desc ? `<p class="section-desc">${esc(s.desc)}</p>` : ""}
+      ${entries}
+    </div>`;
+  }).join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codes — runisland2015</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0a0a0f; --surface: #111118; --border: #1e1e2e; --text: #e2e2f0; --muted: #6b6b8a; --accent: #e8c547; --accent2: #5ee7c4; --accent3: #f07060; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; height: 60px; gap: 1.5rem; }
+    .logo { font-weight: 800; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .logo span { color: var(--muted); font-weight: 400; }
+    .page-nav { display: flex; gap: 4px; }
+    .pnav { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: .1em; padding: 5px 12px; border-radius: 6px; color: var(--muted); text-decoration: none; border: 1px solid transparent; transition: all .15s; }
+    .pnav:hover { color: var(--text); border-color: var(--border); }
+    .pnav-active { color: var(--accent); border-color: var(--accent); background: rgba(232,197,71,.07); }
+    .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+    .layout { display: flex; min-height: calc(100vh - 60px); }
+    nav { width: 230px; flex-shrink: 0; padding: 1.5rem 0; border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+    nav a { display: flex; align-items: center; gap: 10px; padding: 9px 1.5rem; color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: .02em; transition: color .15s; }
+    nav a:hover, nav a.active { color: var(--text); }
+    nav a .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    nav .nav-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 1.2rem 1.5rem .4rem; }
+    main { flex: 1; padding: 2.5rem 3rem; min-width: 0; max-width: 860px; }
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: .75rem; margin-top: 3.5rem; }
+    .section-title:first-child { margin-top: 0; }
+    .section-title h2 { font-size: .95rem; font-weight: 800; letter-spacing: .04em; color: var(--text); white-space: nowrap; }
+    .section-title .bar { flex: 1; height: 1px; background: var(--border); }
+    .dot-lg { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+    .entry { margin-bottom: 1.5rem; }
+    .entry-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: .35rem; }
+    .entry-desc { font-size: 12px; color: var(--muted); margin-bottom: .5rem; line-height: 1.5; }
+    .code-block { position: relative; background: #0d0d14; border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1rem 1rem 1.25rem; margin: .5rem 0; }
+    .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #b0b8d0; line-height: 1.7; overflow-x: auto; white-space: pre; }
+    .copy-btn { position: absolute; top: 8px; right: 8px; background: #1e1e2e; border: 1px solid #2a2a3e; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all .15s; }
+    .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--accent2); border-color: var(--accent2); }
+    .ref-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: .5rem 0; }
+    .ref-table tr { border-bottom: 1px solid var(--border); }
+    .ref-table tr:last-child { border-bottom: none; }
+    .ref-table td { padding: 7px 10px; color: #8080a0; vertical-align: top; }
+    .ref-table td:first-child { padding-left: 0; }
+    .tc { font-family: 'JetBrains Mono', monospace; color: var(--accent2); white-space: nowrap; min-width: 180px; }
+    .tc2 { font-family: 'JetBrains Mono', monospace; color: var(--muted); white-space: nowrap; min-width: 200px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    @media (max-width: 860px) { nav { display: none; } main { padding: 1.5rem; } header { padding: 0 1rem; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">Skills <span>/ runisland2015</span></div>
+  <nav class="page-nav">
+    <a href="index.html" class="pnav">SKILLS</a>
+    <a href="codes.html" class="pnav pnav-active">CODES</a>
+  </nav>
+  <div class="meta">Configs · Hooks · Agents · MCP</div>
+</header>
+<div class="layout">
+  <nav id="nav">
+    <div class="nav-label">Sections</div>
+${nav}
+  </nav>
+  <main id="main">
+${sections}
+  </main>
+</div>
+<script>
+  function copyCode(btn) {
+    const code = btn.nextElementSibling.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = '✓ copié';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  document.querySelectorAll('[id]').forEach(s => obs.observe(s));
+<\/script>
+</body>
+</html>`;
+}
+
+// ── Main ────────────────────────────────────────────────────────────────────
 const skills = collectSkills();
 const categorized = categorize(skills);
 const total = skills.filter(s => !s.hidden).length;
+const CODES_OUT = path.join(import.meta.dirname, "codes.html");
 fs.writeFileSync(OUT, buildHtml(categorized, total), "utf-8");
+fs.writeFileSync(CODES_OUT, buildCodesHtml(), "utf-8");
 console.log(`✓ index.html régénéré — ${total} skills`);
+console.log(`✓ codes.html régénéré — ${CODES_SECTIONS.length} sections`);
