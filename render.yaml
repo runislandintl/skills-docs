@@ -1,9 +1,9 @@
 services:
   - type: web
     name: skills-docs
-    runtime: static
+    env: static
     staticPublishPath: .
-    buildCommand: ""
+    buildCommand: echo "pre-built static site — no build needed"
     headers:
       - path: /*
         name: Cache-Control

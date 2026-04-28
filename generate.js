@@ -2,10 +2,19 @@
 /**
  * Génère skills-docs/index.html — notice complète de chaque skill en français.
  * Relancé automatiquement après `npx skills add/install/update`.
+ *
+ * ⚠️  Sur serveur CI/Render : le HTML est déjà pré-buildé dans le repo.
+ *     generate.js ne tourne que sur la machine locale où les skills sont installés.
  */
 import fs from "fs";
 import path from "path";
 import os from "os";
+
+// Bail immédiatement en CI / Render (préserve les fichiers pré-buildés du repo)
+if (process.env.CI || process.env.RENDER || process.env.IS_PULL_REQUEST) {
+  console.log("⏭  CI/Render détecté — HTML pré-buildé servi tel quel, génération ignorée.");
+  process.exit(0);
+}
 
 const HOME = os.homedir();
 const OUT = path.join(import.meta.dirname, "index.html");
