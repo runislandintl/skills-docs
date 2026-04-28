@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Référence Skills — runisland2015</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --border: #1e1e2e;
+      --text: #e2e2f0; --muted: #6b6b8a; --accent: #e8c547; --accent2: #5ee7c4; --accent3: #f07060;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; }
+    /* Header */
+    header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 1rem; }
+    .logo { font-weight: 800; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .logo span { color: var(--muted); font-weight: 400; }
+    .search-wrap { position: relative; flex: 1; max-width: 360px; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    #search { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 8px 36px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; transition: border-color .2s; }
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--muted); }
+    .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+    /* Layout */
+    .layout { display: flex; min-height: calc(100vh - 60px); }
+    nav { width: 230px; flex-shrink: 0; padding: 1.5rem 0; border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+    nav a { display: flex; align-items: center; gap: 10px; padding: 9px 1.5rem; color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: .02em; transition: color .15s; }
+    nav a:hover, nav a.active { color: var(--text); }
+    nav a .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    nav .nav-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 1.2rem 1.5rem .4rem; }
+    main { flex: 1; padding: 2.5rem 3rem; min-width: 0; }
+    /* Section */
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; margin-top: 3rem; }
+    .section-title:first-child { margin-top: 0; }
+    .section-title h2 { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .section-title .bar { flex: 1; height: 1px; background: var(--border); }
+    .section-title .badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    /* Card */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; transition: border-color .2s, transform .15s; display: flex; flex-direction: column; gap: 10px; }
+    .card:hover { border-color: #2a2a3e; transform: translateY(-1px); }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .card-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; letter-spacing: .06em; flex-shrink: 0; text-transform: uppercase; }
+    .card-slash { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+    .card-desc { font-size: 13px; color: #9090b0; line-height: 1.6; }
+    /* Sections dans la carte */
+    .card-section { display: flex; flex-direction: column; gap: 5px; }
+    .section-label-sm { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .section-label-sm.must { color: #f07060; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    .bullet-list li { font-size: 12px; color: #8080a0; padding-left: 14px; position: relative; line-height: 1.5; }
+    .bullet-list li::before { content: "–"; position: absolute; left: 0; color: var(--muted); }
+    .must-list li::before { color: #f07060; }
+    .must-list li { color: #c0a0a0; }
+    .ex-code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 5px; padding: 4px 8px; color: var(--accent2); margin-bottom: 3px; }
+    .card-tools { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); padding-top: 4px; border-top: 1px solid var(--border); }
+    .card-tools span { color: var(--accent3); }
+    /* Tags couleurs */
+    .tag.new    { background: rgba(232,197,71,.14); color: #e8c547; }
+    .tag.dev    { background: rgba(94,231,196,.1);  color: #5ee7c4; }
+    .tag.design { background: rgba(192,132,252,.1); color: #c084fc; }
+    .tag.agent  { background: rgba(96,165,250,.1);  color: #60a5fa; }
+    .tag.gstack { background: rgba(251,146,60,.1);  color: #fb923c; }
+    .tag.session{ background: rgba(163,230,53,.1);  color: #a3e635; }
+    .tag.misc   { background: rgba(148,163,184,.1); color: #94a3b8; }
+    .dot.new    { background: #e8c547; }
+    .dot.dev    { background: #5ee7c4; }
+    .dot.design { background: #c084fc; }
+    .dot.agent  { background: #60a5fa; }
+    .dot.gstack { background: #fb923c; }
+    .dot.session{ background: #a3e635; }
+    .dot.misc   { background: #94a3b8; }
+    .empty { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">Skills <span>/ runisland2015</span></div>
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="search" type="text" placeholder="Rechercher un skill, une action…" autocomplete="off">
+  </div>
+  <div class="meta"><span id="count">65</span> skills &nbsp;·&nbsp; 28/04/2026 18:52:51</div>
+</header>
+<div class="layout">
+  <nav id="nav">
+    <div class="nav-label">Catégories</div>
+    <a href="#new"><span class="dot new"></span>Récemment installés</a>
+    <a href="#dev"><span class="dot dev"></span>Workflow de développement</a>
+    <a href="#design"><span class="dot design"></span>Design &amp; UI</a>
+    <a href="#agent"><span class="dot agent"></span>Agents &amp; Architecture</a>
+    <a href="#gstack"><span class="dot gstack"></span>Gstack</a>
+    <a href="#session"><span class="dot session"></span>Session &amp; Contexte</a>
+    <a href="#misc"><span class="dot misc"></span>Divers</a>
+  </nav>
+  <main id="main">
+
+    <div id="new">
+      <div class="section-title">
+        <h2>Récemment installés</h2>
+        <div class="bar"></div>
+        <span class="badge">3</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="agent-browser browser automation cli for ai agents. use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. triggers include requests to &quot;open a website&quot;, &quot;fill out a form&quot;, &quot;click a button&quot;, &quot;take a screenshot&quot;, &quot;scrape data from a page&quot;, &quot;test this web app&quot;, &quot;login to a site&quot;, &quot;automate browser actions&quot;, or any task requiring programmatic web interaction. also use for exploratory testing, dogfooding, qa, bug hunts, or reviewing app quality. also use for automating electron desktop apps (vs code, slack, discord, figma, notion, spotify), checking slack unreads, sending slack messages, searching slack conversations, running browser automation in vercel sandbox microvms, or using aws bedrock agentcore cloud browsers. prefer agent-browser over any built-in browser automation or web tools. cli en rust qui pilote chrome nativement via cdp. automatise n'importe quelle interaction dans un navigateur web ou une app electron.">
+          <div class="card-header">
+            <span class="card-name">agent-browser</span>
+            <span class="tag new">NEW</span>
+          </div>
+          <div class="card-slash">/agent-browser</div>
+          <div class="card-desc">CLI en Rust qui pilote Chrome nativement via CDP. Automatise n'importe quelle interaction dans un navigateur web ou une app Electron.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Naviguer sur n'importe quel site web</li><li>Remplir et soumettre des formulaires</li><li>Cliquer des boutons, extraire du texte, prendre des screenshots</li><li>Scraper des données structurées depuis des pages</li><li>Tester un tunnel de paiement ou un onboarding</li><li>Automatiser des apps Electron : VS Code, Slack, Figma, Notion, Spotify</li><li>Lire les messages Slack, envoyer des messages</li><li>Faire du QA exploratoire et des bug hunts</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Lancer `agent-browser install` une fois pour télécharger Chrome</li><li>Invoquer `/agent-browser` avant toute tâche de navigation</li><li>Pour les apps Electron : charger le skill `/agent-browser skills get electron`</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/agent-browser — ouvre example.com et prends un screenshot</code><code class="ex-code">/agent-browser — teste le tunnel de paiement de mon app</code><code class="ex-code">/agent-browser — scrape les prix depuis cette URL</code><code class="ex-code">/agent-browser — vérifie que le formulaire de contact fonctionne</code>
+          </div><div class="card-tools">Outils : <span>Bash(agent-browser:*), Bash(npx agent-browser:*)</span></div>
+        </div>
+        <div class="card" data-keywords="impeccable use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. covers websites, landing pages, dashboards, product ui, app shells, components, forms, settings, onboarding, and empty states. handles ux review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, ux copy, error states, edge cases, i18n, and reusable design systems or tokens. also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on ui elements, or ambitious visual effects that should feel technically extraordinary. not for backend-only or non-ui tasks. 23 commandes de design frontend qui combattent les patterns 'ai slop' — inter, gradients violets, cards dans des cards — et les remplacent par des choix visuels distinctifs.">
+          <div class="card-header">
+            <span class="card-name">impeccable</span>
+            <span class="tag new">NEW</span>
+          </div>
+          <div class="card-slash">/impeccable</div>
+          <div class="card-desc">23 commandes de design frontend qui combattent les patterns 'AI slop' — Inter, gradients violets, cards dans des cards — et les remplacent par des choix visuels distinctifs.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Auditer une interface : a11y, performance, responsive (`audit`)</li><li>Critiquer l'UX : hiérarchie, clarté, charge cognitive (`critique`)</li><li>Polir une page avant livraison client (`polish`)</li><li>Amplifier un design trop fade (`bolder`) ou calmer un design trop chargé (`quieter`)</li><li>Ajouter du mouvement purposeful : animations, transitions (`animate`)</li><li>Corriger la typographie, les tailles, les polices (`typeset`)</li><li>Adapter un design pour mobile/tablette (`adapt`)</li><li>Générer PRODUCT.md et DESIGN.md pour cadrer un projet (`teach`)</li><li>Itérer visuellement en temps réel dans le navigateur (`live`)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Être dans un projet avec du code frontend (HTML, React, Vue…)</li><li>Pointer sur la page ou le composant à améliorer</li><li>En début de projet : lancer `/impeccable teach` pour créer DESIGN.md</li><li>Pour des effets avancés : avoir un accès preview navigateur actif</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/impeccable audit landing</code><code class="ex-code">/impeccable critique hero section</code><code class="ex-code">/impeccable polish settings page</code><code class="ex-code">/impeccable bolder — le design est trop fade</code><code class="ex-code">/impeccable animate — ajouter de la vie aux boutons</code><code class="ex-code">/impeccable live — itérer sur le header dans le browser</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="vault-pkm  pont bidirectionnel entre claude code et ton vault obsidian. 20 outils mcp pour lire, écrire, rechercher et maintenir ta base de connaissances personnelle.">
+          <div class="card-header">
+            <span class="card-name">vault-pkm</span>
+            <span class="tag new">NEW</span>
+          </div>
+          <div class="card-slash">/vault-pkm</div>
+          <div class="card-desc">Pont bidirectionnel entre Claude Code et ton vault Obsidian. 20 outils MCP pour lire, écrire, rechercher et maintenir ta base de connaissances personnelle.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Lire et écrire des notes Markdown dans ton vault</li><li>Faire des recherches full-text dans toutes tes notes</li><li>Faire des recherches sémantiques par sens (avec clé OpenAI)</li><li>Créer des notes structurées depuis des templates</li><li>Explorer le graphe de liens (wikilinks entrants/sortants)</li><li>Auditer les liens cassés, orphelins, ambigus</li><li>Charger automatiquement le contexte projet à chaque session</li><li>Déplacer et renommer des notes en mettant à jour les liens</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir VAULT_PATH configuré dans ~/.claude/settings.json</li><li>Lancer `/vault-pkm:setup` une fois après installation</li><li>Lancer `/vault-pkm:init-project` dans chaque projet à connecter</li><li>Avoir une clé VAULT_PKM_OPENAI_KEY pour la recherche sémantique (optionnel)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">vault_append — ajoute une entrée dans le devlog du projet</code><code class="ex-code">vault_semantic_search — retrouve mes notes sur HeyGen</code><code class="ex-code">vault_link_health — vérifie les liens cassés dans mon vault</code><code class="ex-code">vault_query — liste toutes les tâches ouvertes</code>
+          </div><div class="card-tools">Outils : <span>vault_read, vault_write, vault_append, vault_semantic_search…</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dev">
+      <div class="section-title">
+        <h2>Workflow de développement</h2>
+        <div class="bar"></div>
+        <span class="badge">9</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="systematic-debugging use when encountering any bug, test failure, or unexpected behavior, before proposing fixes protocole de débogage structuré par hypothèses. force une analyse rigoureuse avant toute modification du code.">
+          <div class="card-header">
+            <span class="card-name">systematic-debugging</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/systematic-debugging</div>
+          <div class="card-desc">Protocole de débogage structuré par hypothèses. Force une analyse rigoureuse avant toute modification du code.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Diagnostiquer un bug en isolant sa cause racine</li><li>Analyser un test qui échoue sans toucher le code trop vite</li><li>Documenter les hypothèses testées et les résultats</li><li>Éviter les fixes cosmétiques qui masquent le vrai problème</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer AVANT d'écrire le moindre fix</li><li>Fournir les logs, messages d'erreur ou comportement observé</li><li>Laisser Claude formuler des hypothèses avant de les valider</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/systematic-debugging — la fonction parseDate retourne undefined</code><code class="ex-code">/systematic-debugging — le test d'intégration échoue en CI mais pas en local</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="test-driven-development use when implementing any feature or bugfix, before writing implementation code applique la discipline tdd : écrire les tests en premier, puis le code qui les fait passer. garantit une couverture réelle et un design orienté contrat.">
+          <div class="card-header">
+            <span class="card-name">test-driven-development</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/test-driven-development</div>
+          <div class="card-desc">Applique la discipline TDD : écrire les tests en premier, puis le code qui les fait passer. Garantit une couverture réelle et un design orienté contrat.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Écrire les tests unitaires et d'intégration avant l'implémentation</li><li>Définir le contrat d'une fonction à partir de ses cas d'usage</li><li>Implémenter en cycles red→green→refactor</li><li>Vérifier que la couverture est réelle et non cosmétique</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer AVANT d'écrire le code de la feature</li><li>Avoir un framework de test configuré (Jest, Vitest, pytest…)</li><li>Accepter que les tests échouent au début — c'est normal</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/test-driven-development — implémente la validation de numéro IBAN</code><code class="ex-code">/test-driven-development — ajoute la logique de calcul de remise</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="writing-plans use when you have a spec or requirements for a multi-step task, before touching code transforme un spec ou des requirements flous en plan d'implémentation structuré avec étapes, dépendances et risques identifiés.">
+          <div class="card-header">
+            <span class="card-name">writing-plans</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/writing-plans</div>
+          <div class="card-desc">Transforme un spec ou des requirements flous en plan d'implémentation structuré avec étapes, dépendances et risques identifiés.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Décomposer une tâche complexe en étapes atomiques</li><li>Identifier les dépendances entre tâches</li><li>Anticiper les risques et blocages potentiels</li><li>Produire un plan que tu valides avant tout code</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer AVANT de toucher le code, pas après</li><li>Avoir un spec, une description de feature ou un brief client</li><li>Valider le plan avant de passer à l'exécution</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/writing-plans — intégrer le webhook Stripe pour les remboursements</code><code class="ex-code">/writing-plans — migrer la base de données vers PostgreSQL</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="executing-plans use when you have a written implementation plan to execute in a separate session with review checkpoints exécute un plan d'implémentation existant dans une session dédiée, avec des points de contrôle après chaque étape.">
+          <div class="card-header">
+            <span class="card-name">executing-plans</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/executing-plans</div>
+          <div class="card-desc">Exécute un plan d'implémentation existant dans une session dédiée, avec des points de contrôle après chaque étape.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Dérouler un plan écrit étape par étape</li><li>Faire une review à chaque checkpoint avant de continuer</li><li>Garder la session principale propre pendant l'exécution</li><li>Reprendre un plan interrompu sans perdre le fil</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un plan écrit au préalable (via `/writing-plans` ou manuellement)</li><li>Valider chaque étape avant de passer à la suivante</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/executing-plans — exécute le plan dans tasks/todo.md</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="verification-before-completion use when about to claim work is complete, fixed, or passing, before committing or creating prs - requires running verification commands and confirming output before making any success claims; evidence before assertions always bloque toute déclaration de 'tâche terminée' sans preuve. exige l'exécution des commandes de vérification et la confirmation des résultats.">
+          <div class="card-header">
+            <span class="card-name">verification-before-completion</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/verification-before-completion</div>
+          <div class="card-desc">Bloque toute déclaration de 'tâche terminée' sans preuve. Exige l'exécution des commandes de vérification et la confirmation des résultats.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Vérifier qu'une feature fonctionne réellement avant de la déclarer done</li><li>Éviter les faux positifs ('les tests passent' sans les avoir lancés)</li><li>Documenter la preuve de bon fonctionnement</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer AVANT tout commit, PR ou message 'c'est fait'</li><li>Avoir les commandes de test ou de vérification disponibles</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/verification-before-completion — avant de merger la PR #42</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="requesting-code-review use when completing tasks, implementing major features, or before merging to verify work meets requirements structure une demande de code review rigoureuse : contexte, changements, tests effectués, points d'attention.">
+          <div class="card-header">
+            <span class="card-name">requesting-code-review</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/requesting-code-review</div>
+          <div class="card-desc">Structure une demande de code review rigoureuse : contexte, changements, tests effectués, points d'attention.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Préparer une review request complète et actionnable</li><li>Mettre en évidence les choix d'implémentation à discuter</li><li>Vérifier que le code est prêt à être reviewé avant de demander</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir une implémentation complète et testée</li><li>Invoquer avant de soumettre une PR ou de demander une review</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/requesting-code-review — PR de refactoring du module auth</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="receiving-code-review use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation analyse le feedback reçu d'une code review avec rigueur : distingue les suggestions valides des opinions non fondées avant d'implémenter quoi que ce soit.">
+          <div class="card-header">
+            <span class="card-name">receiving-code-review</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/receiving-code-review</div>
+          <div class="card-desc">Analyse le feedback reçu d'une code review avec rigueur : distingue les suggestions valides des opinions non fondées avant d'implémenter quoi que ce soit.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Évaluer chaque commentaire de review techniquement</li><li>Questionner les suggestions floues ou contre-productives</li><li>Implémenter seulement ce qui est réellement justifié</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir les commentaires de review en main</li><li>Invoquer AVANT de toucher le code en réponse à une review</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/receiving-code-review — le reviewer dit de tout refactorer en classes</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="finishing-a-development-branch use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, pr, or cleanup guide la fin d'une branche de développement : présente les options (merge direct, pr, squash, cleanup) et aide à choisir la bonne stratégie.">
+          <div class="card-header">
+            <span class="card-name">finishing-a-development-branch</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/finishing-a-development-branch</div>
+          <div class="card-desc">Guide la fin d'une branche de développement : présente les options (merge direct, PR, squash, cleanup) et aide à choisir la bonne stratégie.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Choisir entre merge, PR ou squash selon le contexte</li><li>Vérifier que la branche est prête avant toute intégration</li><li>Nettoyer les commits et préparer un changelog</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir une implémentation complète avec tests passants</li><li>Invoquer quand tu es prêt à intégrer, pas avant</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/finishing-a-development-branch — feature/stripe-webhooks</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="brainstorming you must use this before any creative work - creating features, building components, adding functionality, or modifying behavior. explores user intent, requirements and design before implementation. exploration structurée avant tout travail créatif : clarifie l'intention, explore les approches, évalue les trade-offs avant de coder.">
+          <div class="card-header">
+            <span class="card-name">brainstorming</span>
+            <span class="tag dev">DEV</span>
+          </div>
+          <div class="card-slash">/brainstorming</div>
+          <div class="card-desc">Exploration structurée avant tout travail créatif : clarifie l'intention, explore les approches, évalue les trade-offs avant de coder.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Clarifier les requirements flous ou contradictoires</li><li>Explorer plusieurs approches techniques avant de choisir</li><li>Identifier les risques et contraintes d'une feature</li><li>Aligner sur l'intention avant de toucher le code</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer AVANT toute création de feature ou composant</li><li>Laisser l'exploration se faire — ne pas forcer une solution</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/brainstorming — comment implémenter le système de notifications ?</code><code class="ex-code">/brainstorming — architecture de la gestion des permissions</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="design">
+      <div class="section-title">
+        <h2>Design &amp; UI</h2>
+        <div class="bar"></div>
+        <span class="badge">5</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="ui-ux-pro-max ui/ux design intelligence. 67 styles, 96 palettes, 57 font pairings, 25 charts, 13 stacks (react, next.js, vue, svelte, swiftui, react native, flutter, tailwind, shadcn/ui). actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, check ui/ux code. projects: website, landing page, dashboard, admin panel, e-commerce, saas, portfolio, blog, mobile app, .html, .tsx, .vue, .svelte. elements: button, modal, navbar, sidebar, card, table, form, chart. styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, flat design. topics: color palette, accessibility, animation, layout, typography, font pairing, spacing, hover, shadow, gradient. integrations: shadcn/ui mcp for component search and examples. intelligence de design étendue : 67 styles visuels, 96 palettes, 57 pairings de polices, 13 stacks front (react, next, vue, svelte, flutter, swiftui, tailwind, shadcn…).">
+          <div class="card-header">
+            <span class="card-name">ui-ux-pro-max</span>
+            <span class="tag design">DESIGN</span>
+          </div>
+          <div class="card-slash">/ui-ux-pro-max</div>
+          <div class="card-desc">Intelligence de design étendue : 67 styles visuels, 96 palettes, 57 pairings de polices, 13 stacks front (React, Next, Vue, Svelte, Flutter, SwiftUI, Tailwind, shadcn…).</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Créer une interface dans n'importe quel style : glassmorphism, brutalism, bento grid, neumorphism, skeuomorphism…</li><li>Générer des dashboards, landing pages, panels admin, apps mobile</li><li>Choisir une palette de couleurs et un système typographique cohérent</li><li>Intégrer shadcn/ui, Tailwind, Framer Motion</li><li>Corriger accessibilité, animations, responsive, ombres, gradients</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Préciser le style visuel souhaité si tu en as un</li><li>Avoir un projet frontend actif (ou décrire ce que tu veux créer)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/ui-ux-pro-max — crée un dashboard dark glassmorphism en Next.js</code><code class="ex-code">/ui-ux-pro-max — landing page brutalist pour un outil CLI</code><code class="ex-code">/ui-ux-pro-max — refais le formulaire d'inscription, trop générique</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="design-html | génère du html/css pur pour des interfaces visuelles. idéal pour des maquettes rapides, des emails ou des composants standalone.">
+          <div class="card-header">
+            <span class="card-name">design-html</span>
+            <span class="tag design">DESIGN</span>
+          </div>
+          <div class="card-slash">/design-html</div>
+          <div class="card-desc">Génère du HTML/CSS pur pour des interfaces visuelles. Idéal pour des maquettes rapides, des emails ou des composants standalone.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Créer une maquette HTML/CSS sans framework</li><li>Générer un template d'email responsive</li><li>Prototyper une interface rapidement</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire l'interface souhaitée avec ses contraintes visuelles</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/design-html — une page de confirmation de commande minimaliste</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="design-consultation | session de consultation design : définit la direction visuelle, les contraintes et le public cible avant de produire quoi que ce soit.">
+          <div class="card-header">
+            <span class="card-name">design-consultation</span>
+            <span class="tag design">DESIGN</span>
+          </div>
+          <div class="card-slash">/design-consultation</div>
+          <div class="card-desc">Session de consultation design : définit la direction visuelle, les contraintes et le public cible avant de produire quoi que ce soit.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Définir une charte visuelle cohérente pour un projet</li><li>Aligner sur les valeurs, le ton et l'identité visuelle</li><li>Choisir stack, typographie et palette avant de coder</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer en tout début de projet ou avant une refonte</li><li>Avoir des références visuelles ou un brief client si possible</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/design-consultation — on démarre la refonte de claresai.com</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="design-shotgun | génère plusieurs directions visuelles différentes en une passe pour choisir la plus forte. exploration rapide multi-variantes.">
+          <div class="card-header">
+            <span class="card-name">design-shotgun</span>
+            <span class="tag design">DESIGN</span>
+          </div>
+          <div class="card-slash">/design-shotgun</div>
+          <div class="card-desc">Génère plusieurs directions visuelles différentes en une passe pour choisir la plus forte. Exploration rapide multi-variantes.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Produire 3-5 interprétations visuelles d'une même interface</li><li>Comparer des directions opposées (minimaliste vs dramatique)</li><li>Trouver la direction sans s'engager trop tôt</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire le contexte et le public cible</li><li>Accepter que les résultats soient divergents — c'est le but</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/design-shotgun — hero section pour une app SaaS B2B</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="design-review | review design technique : vérifie la cohérence du système de design, les espacements, la hiérarchie visuelle et les anti-patterns.">
+          <div class="card-header">
+            <span class="card-name">design-review</span>
+            <span class="tag design">DESIGN</span>
+          </div>
+          <div class="card-slash">/design-review</div>
+          <div class="card-desc">Review design technique : vérifie la cohérence du système de design, les espacements, la hiérarchie visuelle et les anti-patterns.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Identifier les incohérences dans un système de design existant</li><li>Vérifier que les tokens sont bien appliqués</li><li>Repérer les violations de la charte visuelle</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir du code frontend à reviewer</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/design-review — components/Button.tsx et ses variantes</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="agent">
+      <div class="section-title">
+        <h2>Agents &amp; Architecture</h2>
+        <div class="bar"></div>
+        <span class="badge">6</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="dispatching-parallel-agents use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies orchestre plusieurs sous-agents en parallèle pour traiter des tâches indépendantes simultanément et réduire le temps d'exécution.">
+          <div class="card-header">
+            <span class="card-name">dispatching-parallel-agents</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/dispatching-parallel-agents</div>
+          <div class="card-desc">Orchestre plusieurs sous-agents en parallèle pour traiter des tâches indépendantes simultanément et réduire le temps d'exécution.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Lancer 2+ tâches en parallèle sans état partagé</li><li>Réduire le temps total d'une session complexe</li><li>Garder le contexte principal propre</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>S'assurer que les tâches sont vraiment indépendantes</li><li>Invoquer quand tu as un ensemble de tâches clairement définies</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/dispatching-parallel-agents — écrire les tests + documenter l'API + migrer les styles</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="subagent-driven-development use when executing implementation plans with independent tasks in the current session exécute un plan d'implémentation en déléguant chaque tâche à un sous-agent dédié dans la session courante.">
+          <div class="card-header">
+            <span class="card-name">subagent-driven-development</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/subagent-driven-development</div>
+          <div class="card-desc">Exécute un plan d'implémentation en déléguant chaque tâche à un sous-agent dédié dans la session courante.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Implémenter un plan complexe sans polluer le contexte principal</li><li>Isoler chaque tâche dans son propre contexte d'exécution</li><li>Paralléliser l'implémentation de tâches indépendantes</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un plan d'implémentation écrit et validé</li><li>S'assurer que les tâches peuvent être exécutées indépendamment</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/subagent-driven-development — exécute le plan de migration v2</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="using-git-worktrees use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification crée des worktrees git isolés pour travailler sur une feature sans polluer l'espace de travail courant. idéal pour les expérimentations risquées.">
+          <div class="card-header">
+            <span class="card-name">using-git-worktrees</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/using-git-worktrees</div>
+          <div class="card-desc">Crée des worktrees git isolés pour travailler sur une feature sans polluer l'espace de travail courant. Idéal pour les expérimentations risquées.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Tester une feature dans un répertoire isolé</li><li>Travailler sur plusieurs branches simultanément</li><li>Expérimenter sans risquer de casser la branche principale</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Être dans un repo git</li><li>Invoquer avant de démarrer un travail risqué ou expérimental</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/using-git-worktrees — avant de tester la migration Prisma</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="writing-skills use when creating new skills, editing existing skills, or verifying skills work before deployment guide pour créer, modifier ou valider des skills claude code. inclut les conventions, la structure skill.md et les tests de déploiement.">
+          <div class="card-header">
+            <span class="card-name">writing-skills</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/writing-skills</div>
+          <div class="card-desc">Guide pour créer, modifier ou valider des skills Claude Code. Inclut les conventions, la structure SKILL.md et les tests de déploiement.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Créer un nouveau skill personnalisé pour tes workflows</li><li>Modifier un skill existant pour l'adapter à ton contexte</li><li>Valider qu'un skill fonctionne avant de le partager</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Comprendre le format frontmatter SKILL.md</li><li>Tester le skill dans une session réelle avant de le publier</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/writing-skills — crée un skill /claresai-pipeline</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="using-superpowers use when starting any conversation - establishes how to find and use skills, requiring skill tool invocation before any response including clarifying questions meta-skill : explique comment trouver et utiliser tous les skills disponibles. à invoquer au démarrage d'une conversation pour activer le toolkit complet.">
+          <div class="card-header">
+            <span class="card-name">using-superpowers</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/using-superpowers</div>
+          <div class="card-desc">Meta-skill : explique comment trouver et utiliser tous les skills disponibles. À invoquer au démarrage d'une conversation pour activer le toolkit complet.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Découvrir tous les skills disponibles dans la session</li><li>Comprendre comment les invoquer correctement</li><li>Activer le mode 'superpowers' pour des réponses optimales</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer au tout début d'une conversation importante</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/using-superpowers</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="pair-agent | active le mode pair programming avec un sous-agent dédié : l'un code, l'autre review en temps réel.">
+          <div class="card-header">
+            <span class="card-name">pair-agent</span>
+            <span class="tag agent">AGENT</span>
+          </div>
+          <div class="card-slash">/pair-agent</div>
+          <div class="card-desc">Active le mode pair programming avec un sous-agent dédié : l'un code, l'autre review en temps réel.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Avoir une deuxième lecture critique en temps réel</li><li>Détecter les erreurs pendant l'implémentation, pas après</li><li>Alterner les rôles driver/navigator</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire la tâche à implémenter en pair</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/pair-agent — implémente le module de parsing des factures</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="gstack">
+      <div class="section-title">
+        <h2>Gstack</h2>
+        <div class="bar"></div>
+        <span class="badge">33</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="browse | navigation web via le browser gstack. à utiliser pour toute navigation — ne jamais utiliser les outils chrome mcp directement.">
+          <div class="card-header">
+            <span class="card-name">browse</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/browse</div>
+          <div class="card-desc">Navigation web via le browser gstack. À utiliser pour TOUTE navigation — ne jamais utiliser les outils Chrome MCP directement.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Ouvrir n'importe quelle URL et lire son contenu</li><li>Naviguer dans des pages nécessitant JavaScript</li><li>Extraire du texte, des liens ou des données structurées</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Toujours utiliser `/browse` — jamais les outils `mcp__Claude_in_Chrome__*` directement</li><li>Fournir l'URL complète</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/browse https://docs.anthropic.com/claude-code</code><code class="ex-code">/browse — lis la page de pricing de ce concurrent</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="qa | workflow qa complet : teste l'app dans le navigateur, identifie les régressions, documente les bugs trouvés avec reproduction steps.">
+          <div class="card-header">
+            <span class="card-name">qa</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/qa</div>
+          <div class="card-desc">Workflow QA complet : teste l'app dans le navigateur, identifie les régressions, documente les bugs trouvés avec reproduction steps.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Tester les flows principaux d'une application web</li><li>Détecter des régressions visuelles et fonctionnelles</li><li>Produire un rapport de bugs structuré</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un serveur de dev actif</li><li>Décrire les flows à tester</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/qa — teste l'onboarding complet de claresai</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="qa-only | |">
+          <div class="card-header">
+            <span class="card-name">qa-only</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/qa-only</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="ship | workflow end-to-end pour shipper une feature : implémentation, tests, review, deploy. un seul skill pour tout le cycle.">
+          <div class="card-header">
+            <span class="card-name">ship</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/ship</div>
+          <div class="card-desc">Workflow end-to-end pour shipper une feature : implémentation, tests, review, deploy. Un seul skill pour tout le cycle.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Finir et déployer une feature de A à Z</li><li>Avoir un checklist de livraison automatique</li><li>Ne rien oublier avant un deploy en prod</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir une feature implémentée ou en cours</li><li>Avoir les accès de déploiement configurés</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/ship — feature/stripe-refunds</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="retro | rétrospective structurée : ce qui a bien marché, ce qui a bloqué, actions concrètes pour la prochaine itération.">
+          <div class="card-header">
+            <span class="card-name">retro</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/retro</div>
+          <div class="card-desc">Rétrospective structurée : ce qui a bien marché, ce qui a bloqué, actions concrètes pour la prochaine itération.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Analyser une sprint, une release ou un incident</li><li>Identifier les patterns de blocage récurrents</li><li>Produire des actions concrètes et assignables</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir du contexte sur la période à analyser</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/retro — sprint 12, livraison du module vidéo</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="investigate | investigation approfondie d'un problème ou d'un sujet technique. structure la recherche, formule des hypothèses et synthétise les findings.">
+          <div class="card-header">
+            <span class="card-name">investigate</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/investigate</div>
+          <div class="card-desc">Investigation approfondie d'un problème ou d'un sujet technique. Structure la recherche, formule des hypothèses et synthétise les findings.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Investiguer la cause d'un incident ou d'une dégradation</li><li>Analyser un sujet technique inconnu</li><li>Produire un rapport d'investigation structuré</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire le problème ou le sujet à investiguer</li><li>Fournir les données disponibles (logs, métriques, code…)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/investigate — pourquoi les vidéos HeyGen ont une lip-sync décalée</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="plan-eng-review | review d'un plan technique depuis une perspective ingénierie : faisabilité, risques, alternatives, dette technique.">
+          <div class="card-header">
+            <span class="card-name">plan-eng-review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/plan-eng-review</div>
+          <div class="card-desc">Review d'un plan technique depuis une perspective ingénierie : faisabilité, risques, alternatives, dette technique.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Évaluer la solidité technique d'un plan</li><li>Identifier les risques et les lacunes</li><li>Suggérer des alternatives plus robustes</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un plan écrit à soumettre</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/plan-eng-review — plan de migration vers microservices</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="plan-ceo-review | review d'un plan depuis une perspective ceo/business : roi, priorités, alignement stratégique, go/no-go.">
+          <div class="card-header">
+            <span class="card-name">plan-ceo-review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/plan-ceo-review</div>
+          <div class="card-desc">Review d'un plan depuis une perspective CEO/business : ROI, priorités, alignement stratégique, go/no-go.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Évaluer si un plan vaut l'investissement</li><li>Identifier les risques business et les dépendances</li><li>Arbitrer entre plusieurs options stratégiques</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un plan ou une proposition à évaluer</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/plan-ceo-review — roadmap Q3 : 3 features vs refactoring</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="plan-design-review | |">
+          <div class="card-header">
+            <span class="card-name">plan-design-review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/plan-design-review</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="plan-devex-review | |">
+          <div class="card-header">
+            <span class="card-name">plan-devex-review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/plan-devex-review</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="careful | mode d'exécution ultra-prudent, étape par étape avec confirmation avant chaque action destructive ou irréversible.">
+          <div class="card-header">
+            <span class="card-name">careful</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/careful</div>
+          <div class="card-desc">Mode d'exécution ultra-prudent, étape par étape avec confirmation avant chaque action destructive ou irréversible.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Exécuter des opérations risquées en mode sécurisé</li><li>Avoir un point de contrôle avant chaque action critique</li><li>Éviter les erreurs irréversibles sur la prod ou les données</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer quand l'opération est risquée ou irréversible</li><li>Être prêt à confirmer chaque étape</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/careful — supprime les anciennes entrées de la DB</code><code class="ex-code">/careful — déploie la mise à jour des permissions</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="canary | déploiement canary : déploie progressivement avec surveillance et rollback automatique si une métrique dépasse le seuil.">
+          <div class="card-header">
+            <span class="card-name">canary</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/canary</div>
+          <div class="card-desc">Déploiement canary : déploie progressivement avec surveillance et rollback automatique si une métrique dépasse le seuil.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Déployer vers 5% des utilisateurs avant un rollout complet</li><li>Surveiller les erreurs et la latence en temps réel</li><li>Faire un rollback automatique si quelque chose déraille</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir une infrastructure de déploiement progressif configurée</li><li>Définir les métriques de santé à surveiller</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/canary — déploie v2.3.0 sur 10% du trafic</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="autoplan | génère automatiquement un plan d'implémentation structuré à partir d'une description de tâche en langage naturel.">
+          <div class="card-header">
+            <span class="card-name">autoplan</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/autoplan</div>
+          <div class="card-desc">Génère automatiquement un plan d'implémentation structuré à partir d'une description de tâche en langage naturel.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Obtenir un plan détaillé sans écrire le spec soi-même</li><li>Démarrer rapidement sur une tâche complexe</li><li>Avoir une structure pour guider l'implémentation</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire clairement ce que tu veux implémenter</li><li>Valider le plan avant de le lancer</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/autoplan — ajoute un système de notifications push</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="freeze | gèle les modifications sur le code. aucune écriture autorisée tant que `/unfreeze` n'a pas été invoqué.">
+          <div class="card-header">
+            <span class="card-name">freeze</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/freeze</div>
+          <div class="card-desc">Gèle les modifications sur le code. Aucune écriture autorisée tant que `/unfreeze` n'a pas été invoqué.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Protéger le code pendant une période de stabilisation</li><li>Empêcher toute modification accidentelle avant une release</li><li>Forcer une review avant de reprendre le dev</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer `/unfreeze` explicitement pour reprendre le travail</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/freeze — freeze avant la démo client de demain</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="unfreeze | |">
+          <div class="card-header">
+            <span class="card-name">unfreeze</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/unfreeze</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="benchmark | mesure et compare les performances : temps d'exécution, mémoire, throughput. produit des rapports avec graphes comparatifs.">
+          <div class="card-header">
+            <span class="card-name">benchmark</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/benchmark</div>
+          <div class="card-desc">Mesure et compare les performances : temps d'exécution, mémoire, throughput. Produit des rapports avec graphes comparatifs.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Benchmarker une fonction ou un endpoint</li><li>Comparer deux implémentations</li><li>Identifier les goulots d'étranglement</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire ce qu'on mesure et dans quelles conditions</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/benchmark — compare l'ancienne et la nouvelle implémentation du parser</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="benchmark-models | compare plusieurs modèles claude sur une même tâche : qualité de réponse, vitesse, coût. aide à choisir le modèle optimal.">
+          <div class="card-header">
+            <span class="card-name">benchmark-models</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/benchmark-models</div>
+          <div class="card-desc">Compare plusieurs modèles Claude sur une même tâche : qualité de réponse, vitesse, coût. Aide à choisir le modèle optimal.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Choisir entre Sonnet, Opus et Haiku pour un cas d'usage</li><li>Mesurer objectivement la qualité vs le coût</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Définir la tâche et les critères d'évaluation</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/benchmark-models — pour la génération de scripts vidéo Claresai</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="review | code review approfondie : qualité, sécurité, performance, maintenabilité. produit des findings priorisés avec suggestions concrètes.">
+          <div class="card-header">
+            <span class="card-name">review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/review</div>
+          <div class="card-desc">Code review approfondie : qualité, sécurité, performance, maintenabilité. Produit des findings priorisés avec suggestions concrètes.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Auditer un fichier, un module ou une PR complète</li><li>Identifier les vulnérabilités de sécurité</li><li>Repérer les problèmes de performance et de maintenabilité</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Pointer sur le code à reviewer</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/review — handlers/payment.js</code><code class="ex-code">/review — PR #42 complète</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="learn | workflow d'apprentissage guidé sur un sujet technique ou un nouvel outil. adapte le niveau d'explication à ton contexte.">
+          <div class="card-header">
+            <span class="card-name">learn</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/learn</div>
+          <div class="card-desc">Workflow d'apprentissage guidé sur un sujet technique ou un nouvel outil. Adapte le niveau d'explication à ton contexte.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Comprendre rapidement une nouvelle technologie</li><li>Obtenir des exemples concrets adaptés à ton stack</li><li>Identifier quoi retenir en priorité</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Décrire ton niveau actuel sur le sujet</li><li>Préciser l'objectif concret (ce que tu veux pouvoir faire après)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/learn — comprendre sqlite-vec pour la recherche sémantique</code><code class="ex-code">/learn — les hooks React useCallback et useMemo</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="land-and-deploy | |">
+          <div class="card-header">
+            <span class="card-name">land-and-deploy</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/land-and-deploy</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="devex-review | |">
+          <div class="card-header">
+            <span class="card-name">devex-review</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/devex-review</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="connect-chrome | |">
+          <div class="card-header">
+            <span class="card-name">open-gstack-browser</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/connect-chrome</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="open-gstack-browser | |">
+          <div class="card-header">
+            <span class="card-name">open-gstack-browser</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/open-gstack-browser</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="setup-browser-cookies | |">
+          <div class="card-header">
+            <span class="card-name">setup-browser-cookies</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/setup-browser-cookies</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="setup-gbrain | |">
+          <div class="card-header">
+            <span class="card-name">setup-gbrain</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/setup-gbrain</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="codex | |">
+          <div class="card-header">
+            <span class="card-name">codex</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/codex</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="cso | |">
+          <div class="card-header">
+            <span class="card-name">cso</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/cso</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="gstack | |">
+          <div class="card-header">
+            <span class="card-name">gstack</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/gstack</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="gstack-upgrade | |">
+          <div class="card-header">
+            <span class="card-name">gstack-upgrade</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/gstack-upgrade</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="guard | |">
+          <div class="card-header">
+            <span class="card-name">guard</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/guard</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="plan-tune | |">
+          <div class="card-header">
+            <span class="card-name">plan-tune</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/plan-tune</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+        <div class="card" data-keywords="smart-search  voir skill.md pour la documentation complète.">
+          <div class="card-header">
+            <span class="card-name">smart-search</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/smart-search</div>
+          <div class="card-desc">Voir SKILL.md pour la documentation complète.</div>
+          
+        </div>
+        <div class="card" data-keywords="office-hours | |">
+          <div class="card-header">
+            <span class="card-name">office-hours</span>
+            <span class="tag gstack">GSTACK</span>
+          </div>
+          <div class="card-slash">/office-hours</div>
+          <div class="card-desc">|</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div id="session">
+      <div class="section-title">
+        <h2>Session &amp; Contexte</h2>
+        <div class="bar"></div>
+        <span class="badge">5</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="project-routine routine best-practice complète à appliquer au démarrage de chaque nouveau projet ou session claude code / cowork. trigger automatique via sessionstart hook + invocable manuellement avec /project-routine. routine complète à appliquer au démarrage de chaque session : lire les fichiers de contexte, vérifier les mcp, choisir le modèle, appliquer les leçons.">
+          <div class="card-header">
+            <span class="card-name">project-routine</span>
+            <span class="tag session">SESSION</span>
+          </div>
+          <div class="card-slash">/project-routine</div>
+          <div class="card-desc">Routine complète à appliquer au démarrage de chaque session : lire les fichiers de contexte, vérifier les MCP, choisir le modèle, appliquer les leçons.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Reprendre exactement là où tu t'étais arrêté</li><li>Appliquer toutes les leçons passées avant de coder</li><li>Vérifier que l'environnement (MCP, permissions) est correct</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir tasks/todo.md, tasks/lessons.md et tasks/projects.md à jour</li><li>Invoquer au tout début de chaque session</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/project-routine</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="claude-council simule un conseil d'ia qui débat d'une décision business et rend un verdict clair avec une action concrète. trigger quand l'utilisateur écrit &quot;/ask-the-council&quot; ou &quot;ask the council&quot; suivi d'une question (business, tech, pricing, recrutement, direction). simule un conseil ia multi-perspectives (technique, business, design, risque) qui débat et rend un verdict clair avec une action concrète.">
+          <div class="card-header">
+            <span class="card-name">claude-council</span>
+            <span class="tag session">SESSION</span>
+          </div>
+          <div class="card-slash">/claude-council</div>
+          <div class="card-desc">Simule un conseil IA multi-perspectives (technique, business, design, risque) qui débat et rend un verdict clair avec une action concrète.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Obtenir un avis multi-dimensions sur une décision importante</li><li>Débloquer une décision difficile avec des arguments structurés</li><li>Évaluer les risques d'une option stratégique</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Formuler la question clairement</li><li>Fournir le contexte : stack, contraintes, enjeux</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/ask-the-council — doit-on migrer vers une architecture microservices ?</code><code class="ex-code">/ask-the-council — React Native ou Flutter pour la prochaine app ?</code><code class="ex-code">/ask-the-council — quel pricing pour Claresai ?</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="context-save | sauvegarde le contexte critique de la session courante avant une compaction, une pause longue ou une fin de journée.">
+          <div class="card-header">
+            <span class="card-name">context-save</span>
+            <span class="tag session">SESSION</span>
+          </div>
+          <div class="card-slash">/context-save</div>
+          <div class="card-desc">Sauvegarde le contexte critique de la session courante avant une compaction, une pause longue ou une fin de journée.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Préserver les décisions importantes avant `/compact`</li><li>Documenter l'état exact pour reprendre sans perte</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer avant toute compaction ou longue pause</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/context-save — avant la compaction de fin de session</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="context-restore | recharge le contexte sauvegardé au démarrage d'une nouvelle session pour reprendre exactement là où on s'était arrêté.">
+          <div class="card-header">
+            <span class="card-name">context-restore</span>
+            <span class="tag session">SESSION</span>
+          </div>
+          <div class="card-slash">/context-restore</div>
+          <div class="card-desc">Recharge le contexte sauvegardé au démarrage d'une nouvelle session pour reprendre exactement là où on s'était arrêté.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Reprendre une session après une interruption sans réexpliquer</li><li>Restaurer les décisions et l'état du travail en cours</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir fait un `/context-save` au préalable</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/context-restore — reprends où on était hier</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="health | vérifie l'état du workspace : mcp actifs, skills chargés, permissions configurées, usage du contexte, modèle actif.">
+          <div class="card-header">
+            <span class="card-name">health</span>
+            <span class="tag session">SESSION</span>
+          </div>
+          <div class="card-slash">/health</div>
+          <div class="card-desc">Vérifie l'état du workspace : MCP actifs, skills chargés, permissions configurées, usage du contexte, modèle actif.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Diagnostiquer pourquoi un skill ou MCP ne répond pas</li><li>Vérifier que tout l'environnement est bien configuré</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Invoquer quand quelque chose ne semble pas fonctionner</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/health</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="misc">
+      <div class="section-title">
+        <h2>Divers</h2>
+        <div class="bar"></div>
+        <span class="badge">5</span>
+      </div>
+      <div class="grid">
+        <div class="card" data-keywords="heygen-skills | toolkit heygen : génération de vidéos avatar ia, gestion des jobs de génération, récupération des mp4 finaux. intègre le pipeline claresai.">
+          <div class="card-header">
+            <span class="card-name">heygen-skills</span>
+            <span class="tag misc">MISC</span>
+          </div>
+          <div class="card-slash">/heygen-skills</div>
+          <div class="card-desc">Toolkit HeyGen : génération de vidéos avatar IA, gestion des jobs de génération, récupération des MP4 finaux. Intègre le pipeline Claresai.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Lancer une génération vidéo HeyGen depuis Claude</li><li>Suivre l'état d'un job de génération</li><li>Récupérer et nommer le fichier MP4 produit</li><li>Gérer les erreurs de génération (lip-sync, fps, résolution)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir HEYGEN_API_KEY dans ~/.claude/settings.json (section env)</li><li>Lire PIPELINE.md de Claresai avant tout module vidéo</li><li>Toujours ffprobe la source avant de lancer la génération</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/heygen-skills — génère la vidéo du module 3 avec Rebecca</code>
+          </div><div class="card-tools">Outils : <span>Bash, WebFetch, Read, Write, mcp__heygen__*</span></div>
+        </div>
+        <div class="card" data-keywords="make-pdf | génère un pdf propre depuis du contenu markdown ou html. idéal pour les livrables clients, rapports et documentation exportée.">
+          <div class="card-header">
+            <span class="card-name">make-pdf</span>
+            <span class="tag misc">MISC</span>
+          </div>
+          <div class="card-slash">/make-pdf</div>
+          <div class="card-desc">Génère un PDF propre depuis du contenu Markdown ou HTML. Idéal pour les livrables clients, rapports et documentation exportée.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Exporter une note Markdown en PDF formaté</li><li>Créer un livrable client depuis du contenu existant</li><li>Générer une documentation au format imprimable</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir le contenu à convertir (fichier .md ou .html)</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/make-pdf — tasks/rapport-audit.md</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="setup-deploy | configure le déploiement pour un projet : vercel, vps, docker, github pages. génère les fichiers de config et les commandes de déploiement.">
+          <div class="card-header">
+            <span class="card-name">setup-deploy</span>
+            <span class="tag misc">MISC</span>
+          </div>
+          <div class="card-slash">/setup-deploy</div>
+          <div class="card-desc">Configure le déploiement pour un projet : Vercel, VPS, Docker, GitHub Pages. Génère les fichiers de config et les commandes de déploiement.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Configurer un premier déploiement sur Vercel ou Netlify</li><li>Générer un Dockerfile et docker-compose.yml</li><li>Mettre en place un pipeline CI/CD basique</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un projet avec un build fonctionnel</li><li>Connaître la plateforme cible</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/setup-deploy — déploie cette app Next.js sur Vercel</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="document-release | génère la documentation de release : changelog structuré, notes de version, guide de migration pour les breaking changes.">
+          <div class="card-header">
+            <span class="card-name">document-release</span>
+            <span class="tag misc">MISC</span>
+          </div>
+          <div class="card-slash">/document-release</div>
+          <div class="card-desc">Génère la documentation de release : changelog structuré, notes de version, guide de migration pour les breaking changes.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Produire un CHANGELOG.md à partir des commits</li><li>Rédiger des release notes pour les utilisateurs</li><li>Documenter les breaking changes et la procédure de migration</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Avoir un historique git propre avec des messages de commit Conventional Commits</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/document-release — v3.0.0 du plugin vault-pkm</code>
+          </div>
+        </div>
+        <div class="card" data-keywords="landing-report | audit et rapport complet d'une landing page : conversion, copywriting, cta, hiérarchie visuelle, performance, seo.">
+          <div class="card-header">
+            <span class="card-name">landing-report</span>
+            <span class="tag misc">MISC</span>
+          </div>
+          <div class="card-slash">/landing-report</div>
+          <div class="card-desc">Audit et rapport complet d'une landing page : conversion, copywriting, CTA, hiérarchie visuelle, performance, SEO.</div>
+          
+          <div class="card-section">
+            <div class="section-label-sm">Ce que tu peux faire</div>
+            <ul class="bullet-list"><li>Identifier pourquoi une landing page ne convertit pas</li><li>Obtenir des recommandations priorisées par impact</li><li>Comparer avec les best practices du secteur</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm must">Ce que tu dois faire</div>
+            <ul class="bullet-list must-list"><li>Fournir l'URL de la page ou le code source</li></ul>
+          </div>
+          <div class="card-section">
+            <div class="section-label-sm">Exemples</div>
+            <code class="ex-code">/landing-report — https://claresai.com</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+  const search = document.getElementById('search');
+  const countEl = document.getElementById('count');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const total = cards.length;
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase().trim();
+    let v = 0;
+    cards.forEach(c => {
+      const show = !q || (c.textContent + ' ' + (c.dataset.keywords||'')).toLowerCase().includes(q);
+      c.style.display = show ? '' : 'none';
+      if (show) v++;
+    });
+    countEl.textContent = q ? v + '/' + total : total;
+    document.querySelectorAll('.grid').forEach(g => {
+      const ok = Array.from(g.querySelectorAll('.card')).some(c => c.style.display !== 'none');
+      let empty = g.querySelector('.empty');
+      if (!ok && !empty) { empty = Object.assign(document.createElement('div'),{className:'empty',textContent:'Aucun résultat'}); g.appendChild(empty); }
+      else if (ok && empty) empty.remove();
+    });
+  });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('[id]').forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
